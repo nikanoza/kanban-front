@@ -1,1 +1,11 @@
 export { default as Plus } from "./Plus";
+export { default as BoardIcon } from "./BoardIcon";
+export { default as Check } from "./Check";
+export { default as DownArrow } from "./DownArrow";
+export { default as UpArrow } from "./UpArrow";
+export { default as Close } from "./Close";
+export { default as Moon } from "./Moon";
+export { default as Hide } from "./Hide";
+export { default as Sun } from "./Sun";
+export { default as Hamburger } from "./Hamburger";
+export { default as Options } from "./Options";

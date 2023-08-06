@@ -9,3 +9,6 @@ export { default as Hide } from "./Hide";
 export { default as Sun } from "./Sun";
 export { default as Hamburger } from "./Hamburger";
 export { default as Options } from "./Options";
+export { default as LogoDark } from "./LogoDark";
+export { default as LogoLight } from "./LogoLight";
+export { default as LogoMobile } from "./LogoMobile";

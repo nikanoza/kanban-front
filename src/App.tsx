@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import { Header } from "./components";
+import styled, { css } from "styled-components";
+import { Empty, Header } from "./components";
 import { useEffect, useState } from "react";
-import { BoardType } from "./types";
+import { BoardType, ThemeProps } from "./types";
 import { getAllBoards } from "./services/boardServices";
 import useTheme from "./hooks/useTheme";
 
@@ -26,6 +26,12 @@ function App() {
   return (
     <Main>
       <Header dark={dark} toDark={toDark} toLight={toLight} />
+      <Content
+        dark={dark}
+        style={{ alignItems: boards.length > 0 ? "flex-start" : "center" }}
+      >
+        {boards.length > 0 ? null : <Empty />}
+      </Content>
     </Main>
   );
 }
@@ -36,3 +42,13 @@ const Main = styled.main`
   width: 100%;
   min-height: 100vh;
 `;
+
+const Content = styled.section(
+  ({ dark }: ThemeProps) => css`
+    width: 100%;
+    min-height: calc(100vh - 64px);
+    display: flex;
+    justify-content: center;
+    background-color: ${dark ? "var(--darkBg)" : "var(--veryLightGray)"};
+  `
+);

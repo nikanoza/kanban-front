@@ -4,6 +4,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 body,
@@ -14,15 +15,15 @@ html {
 
 #root {
   height: 100%;
-  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 :root {
   --violet: #635fc7;
   --violetHover: #a8a4ff;
   --dark: #000112;
+  --darkBg: #20212c;
   --darkHover: #3e3f4e;
-  --gray: #828fa3;
+  --grey: #828fa3;
   --lightGray: #e4ebfa;
   --veryLightGray: #f4f7fd;
   --light: #ffffff;

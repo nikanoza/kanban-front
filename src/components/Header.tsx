@@ -1,12 +1,17 @@
 import styled, { css } from "styled-components";
 import { ThemeProps } from "../types";
 import { DownArrow, Plus, LogoMobile, Options } from "../svg";
+type PropsType = {
+  dark: boolean;
+  toDark: () => void;
+  toLight: () => void;
+};
 
-const Header = () => {
+const Header: React.FC<PropsType> = ({ dark, toDark, toLight }) => {
   return (
-    <HeaderElem dark={false}>
+    <HeaderElem dark={dark}>
       <LogoMobile />
-      <BoardSelect dark={false}>No Boards</BoardSelect>
+      <BoardSelect dark={dark}>No Boards</BoardSelect>
       <DownArrow />
       <PlusBox>
         <Plus />

@@ -3,8 +3,11 @@ import { Header } from "./components";
 import { useEffect, useState } from "react";
 import { BoardType } from "./types";
 import { getAllBoards } from "./services/boardServices";
+import useTheme from "./hooks/useTheme";
 
 function App() {
+  const { dark, toDark, toLight } = useTheme();
+
   const [boards, setBoards] = useState<BoardType[]>([]);
 
   useEffect(() => {
@@ -22,7 +25,7 @@ function App() {
 
   return (
     <Main>
-      <Header />
+      <Header dark={dark} toDark={toDark} toLight={toLight} />
     </Main>
   );
 }

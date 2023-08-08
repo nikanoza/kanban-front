@@ -1,6 +1,8 @@
 import styled, { css } from "styled-components";
 import { ThemeProps } from "../types";
 import { DownArrow, Plus, LogoMobile, Options } from "../svg";
+import { useState } from "react";
+import { MobileMenu } from ".";
 type PropsType = {
   dark: boolean;
   toDark: () => void;
@@ -8,6 +10,12 @@ type PropsType = {
 };
 
 const Header: React.FC<PropsType> = ({ dark, toDark, toLight }) => {
+  const [showMenu, setShoeMenu] = useState<boolean>(false);
+
+  const closeMenu = () => {
+    setShoeMenu(false);
+  };
+
   return (
     <HeaderElem dark={dark}>
       <LogoMobile />
@@ -16,7 +24,8 @@ const Header: React.FC<PropsType> = ({ dark, toDark, toLight }) => {
       <PlusBox>
         <Plus />
       </PlusBox>
-      <Options />
+      <Options onClick={() => setShoeMenu(true)} />
+      {showMenu ? <MobileMenu dark={dark} closeMenu={closeMenu} /> : null}
     </HeaderElem>
   );
 };

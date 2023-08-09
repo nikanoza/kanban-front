@@ -3,10 +3,11 @@ import { Empty, Header } from "./components";
 import { useEffect, useState } from "react";
 import { BoardType, ThemeProps } from "./types";
 import { getAllBoards } from "./services/boardServices";
-import useTheme from "./hooks/useTheme";
+import { useModals, useTheme } from "./hooks";
 
 function App() {
   const { dark, toDark, toLight } = useTheme();
+  const { modalsInfo, updateModals } = useModals();
 
   const [boards, setBoards] = useState<BoardType[]>([]);
 
@@ -25,7 +26,7 @@ function App() {
 
   return (
     <Main>
-      <Header dark={dark} toDark={toDark} toLight={toLight} />
+      <Header dark={dark} toDark={toDark} toLight={toLight} boards={boards} />
       <Content
         dark={dark}
         style={{ alignItems: boards.length > 0 ? "flex-start" : "center" }}

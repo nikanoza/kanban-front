@@ -25,7 +25,7 @@ function App() {
 
   return (
     <Main>
-      <Header dark={dark} toDark={toDark} toLight={toLight} />
+      <Header dark={dark} toDark={toDark} toLight={toLight} boards={boards} />
       <Content
         dark={dark}
         style={{ alignItems: boards.length > 0 ? "flex-start" : "center" }}

@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { ThemeProps } from "../types";
+import { BoardType, ThemeProps } from "../types";
 import { DownArrow, Plus, LogoMobile, Options } from "../svg";
 import { useState } from "react";
 import { MobileMenu } from ".";
@@ -7,9 +7,10 @@ type PropsType = {
   dark: boolean;
   toDark: () => void;
   toLight: () => void;
+  boards: BoardType[];
 };
 
-const Header: React.FC<PropsType> = ({ dark, toDark, toLight }) => {
+const Header: React.FC<PropsType> = ({ dark, boards, toDark, toLight }) => {
   const [showMenu, setShoeMenu] = useState<boolean>(false);
 
   const closeMenu = () => {
@@ -25,7 +26,15 @@ const Header: React.FC<PropsType> = ({ dark, toDark, toLight }) => {
         <Plus />
       </PlusBox>
       <Options onClick={() => setShoeMenu(true)} />
-      {showMenu ? <MobileMenu dark={dark} closeMenu={closeMenu} /> : null}
+      {showMenu ? (
+        <MobileMenu
+          dark={dark}
+          closeMenu={closeMenu}
+          boards={boards}
+          toDark={toDark}
+          toLight={toLight}
+        />
+      ) : null}
     </HeaderElem>
   );
 };

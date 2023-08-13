@@ -26,3 +26,8 @@ export interface SubtaskType {
   active: boolean;
   id: string;
 }
+
+export interface NewBoardType {
+  title: string;
+  columns: string[];
+}

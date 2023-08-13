@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const boardSchema = z.object({
+const newBoardSchema = z.object({
   title: z
     .string()
     .min(3)
@@ -16,4 +16,4 @@ const boardSchema = z.object({
     .default([]),
 });
 
-export default boardSchema;
+export default newBoardSchema;

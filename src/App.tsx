@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { Empty, Header } from "./components";
+import { Empty, Header, Modal, NewBoard } from "./components";
 import { useEffect, useState } from "react";
 import { BoardType, ThemeProps } from "./types";
 import { getAllBoards } from "./services/boardServices";
@@ -33,6 +33,9 @@ function App() {
       >
         {boards.length > 0 ? null : <Empty />}
       </Content>
+      <Modal>
+        <NewBoard dark={dark} />
+      </Modal>
     </Main>
   );
 }

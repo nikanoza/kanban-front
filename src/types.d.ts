@@ -29,5 +29,5 @@ export interface SubtaskType {
 
 export interface NewBoardType {
   title: string;
-  columns: ColumnType[];
+  columns: string[];
 }

@@ -1,7 +1,12 @@
 import styled, { css } from "styled-components";
 import { NewBoardType, ThemeProps } from "../types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import {
+  useForm,
+  SubmitHandler,
+  Controller,
+  useFieldArray,
+} from "react-hook-form";
 import { newBoardSchema } from "../schemas";
 
 type PropsType = {
@@ -12,17 +17,65 @@ const NewBoard: React.FC<PropsType> = ({ dark }) => {
   const {
     handleSubmit,
     register,
+    control,
     formState: { errors },
   } = useForm<NewBoardType>({
     resolver: zodResolver(newBoardSchema),
   });
 
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "columns",
+  });
+
+  const onSubmit: SubmitHandler<NewBoardType> = async (data) => {
+    console.log(data);
+  };
+
   return (
     <Main dark={dark}>
       <Title dark={dark}>Add New Board</Title>
-      <Form>
-        <Label dark={dark}>Board Name</Label>
-        <Input dark={dark} placeholder="e.g. Web Design" />
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Label dark={dark} htmlFor="board-title">
+          Board Name
+        </Label>
+        <Input
+          dark={dark}
+          placeholder="e.g. Web Design"
+          {...register("title")}
+          id="board-title"
+        />
+        <Label dark={dark} htmlFor="">
+          Board Columns
+        </Label>
+        <Controller
+          name="columns"
+          control={control}
+          render={({ field }) => (
+            <div>
+              {field.map((column, index) => (
+                <div key={index}>
+                  <Input
+                    dark={dark}
+                    placeholder={`e.g. Column ${index + 1}`}
+                    {...column}
+                  />
+                  {index > 1 && (
+                    <button type="button" onClick={() => field.remove(index)}>
+                      Remove
+                    </button>
+                  )}
+                  {errors.columns?.[index] && (
+                    <p>{errors.columns[index]?.message}</p>
+                  )}
+                </div>
+              ))}
+              <button type="button" onClick={() => field.append("")}>
+                Add Column
+              </button>
+            </div>
+          )}
+        />
       </Form>
     </Main>
   );
@@ -48,6 +101,7 @@ const Title = styled.h2(
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    margin-bottom: 24px;
   `
 );
 
@@ -62,6 +116,7 @@ const Label = styled.label(
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    margin-bottom: 8px;
   `
 );
 
@@ -70,7 +125,7 @@ const Input = styled.input(
     width: 100%;
     height: 40px;
     padding: 0 16px;
-    flex-shrink: 0;
+    margin-bottom: 12px;
     border-radius: 4px;
     border: 1px solid rgba(130, 143, 163, 0.25);
     background: ${dark ? "var(--darkGray)" : "var(--white)"};

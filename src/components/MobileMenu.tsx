@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 import { BoardType, ThemeProps } from "../types";
 import { useRef } from "react";
 import { BoardIcon, Moon, Sun } from "../svg";
+import { key } from "../hooks/useModals";
 
 type PropsType = {
   dark: boolean;
@@ -9,6 +10,7 @@ type PropsType = {
   toDark: () => void;
   toLight: () => void;
   closeMenu: () => void;
+  updateModals: (property: key) => void;
 };
 
 const MobileMenu: React.FC<PropsType> = ({
@@ -17,6 +19,7 @@ const MobileMenu: React.FC<PropsType> = ({
   boards,
   toDark,
   toLight,
+  updateModals,
 }) => {
   const modalRef = useRef<HTMLDivElement | null>(null);
 
@@ -41,7 +44,12 @@ const MobileMenu: React.FC<PropsType> = ({
           ))}
           <BoardTitle>
             <BoardIcon color="#635FC7" />
-            <Text style={{ color: "#635FC7" }}>+ Create New Board</Text>
+            <Text
+              style={{ color: "#635FC7" }}
+              onClick={() => updateModals("NewBoard")}
+            >
+              + Create New Board
+            </Text>
           </BoardTitle>
         </BoardList>
         <Panel dark={dark}>

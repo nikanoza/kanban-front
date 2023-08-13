@@ -1,10 +1,17 @@
 import styled from "styled-components";
+import { key } from "../hooks/useModals";
 
-const Empty = () => {
+type PropsType = {
+  updateModals: (property: key) => void;
+};
+
+const Empty: React.FC<PropsType> = ({ updateModals }) => {
   return (
     <Main>
       <Text>This board is empty. Create a new column to get started.</Text>
-      <NewBoardButton>+ Add New Column</NewBoardButton>
+      <NewBoardButton onClick={() => updateModals("NewBoard")}>
+        + Add New Column
+      </NewBoardButton>
     </Main>
   );
 };

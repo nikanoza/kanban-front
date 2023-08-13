@@ -26,15 +26,21 @@ function App() {
 
   return (
     <Main>
-      <Header dark={dark} toDark={toDark} toLight={toLight} boards={boards} />
+      <Header
+        dark={dark}
+        toDark={toDark}
+        toLight={toLight}
+        boards={boards}
+        updateModals={updateModals}
+      />
       <Content
         dark={dark}
         style={{ alignItems: boards.length > 0 ? "flex-start" : "center" }}
       >
-        {boards.length > 0 ? null : <Empty />}
+        {boards.length > 0 ? null : <Empty updateModals={updateModals} />}
       </Content>
       {modalsInfo.NewBoard ? (
-        <Modal>
+        <Modal onClick={() => updateModals("NewBoard")}>
           <NewBoard dark={dark} />
         </Modal>
       ) : null}

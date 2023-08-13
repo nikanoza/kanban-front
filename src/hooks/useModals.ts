@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-type ModalsInfoType = {
+export type ModalsInfoType = {
   Task: boolean;
   NewTask: boolean;
   EditTask: boolean;
@@ -20,7 +20,7 @@ const initialState: ModalsInfoType = {
   DeleteBoard: false,
 };
 
-type key = keyof ModalsInfoType;
+export type key = keyof ModalsInfoType;
 
 const useModals = () => {
   const [modalsInfo, setModalsInfo] = useState<ModalsInfoType>(initialState);

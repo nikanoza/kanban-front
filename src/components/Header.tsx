@@ -3,14 +3,22 @@ import { BoardType, ThemeProps } from "../types";
 import { DownArrow, Plus, LogoMobile, Options } from "../svg";
 import { useState } from "react";
 import { MobileMenu } from ".";
+import { key } from "../hooks/useModals";
 type PropsType = {
   dark: boolean;
   toDark: () => void;
   toLight: () => void;
   boards: BoardType[];
+  updateModals: (property: key) => void;
 };
 
-const Header: React.FC<PropsType> = ({ dark, boards, toDark, toLight }) => {
+const Header: React.FC<PropsType> = ({
+  dark,
+  boards,
+  toDark,
+  toLight,
+  updateModals,
+}) => {
   const [showMenu, setShoeMenu] = useState<boolean>(false);
 
   const closeMenu = () => {
@@ -23,7 +31,7 @@ const Header: React.FC<PropsType> = ({ dark, boards, toDark, toLight }) => {
       <BoardSelect dark={dark}>No Boards</BoardSelect>
       <DownArrow />
       <PlusBox>
-        <Plus />
+        <Plus onClick={() => updateModals("NewBoard")} />
       </PlusBox>
       <Options onClick={() => setShoeMenu(true)} />
       {showMenu ? (
@@ -33,6 +41,7 @@ const Header: React.FC<PropsType> = ({ dark, boards, toDark, toLight }) => {
           boards={boards}
           toDark={toDark}
           toLight={toLight}
+          updateModals={updateModals}
         />
       ) : null}
     </HeaderElem>

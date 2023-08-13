@@ -10,7 +10,7 @@ const Empty: React.FC<PropsType> = ({ updateModals }) => {
     <Main>
       <Text>This board is empty. Create a new column to get started.</Text>
       <NewBoardButton onClick={() => updateModals("NewBoard")}>
-        + Add New Column
+        + Add New Board
       </NewBoardButton>
     </Main>
   );

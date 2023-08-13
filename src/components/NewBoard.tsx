@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { NewBoardType, ThemeProps } from "../types";
+import { BoardType, NewBoardType, ThemeProps } from "../types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   useForm,
@@ -9,12 +9,14 @@ import {
 } from "react-hook-form";
 import { newBoardSchema } from "../schemas";
 import { Close } from "../svg";
+import { createNewBoard } from "../services/boardServices";
 
 type PropsType = {
   dark: boolean;
+  setBoards: React.Dispatch<React.SetStateAction<BoardType[]>>;
 };
 
-const NewBoard: React.FC<PropsType> = ({ dark }) => {
+const NewBoard: React.FC<PropsType> = ({ dark, setBoards }) => {
   const {
     handleSubmit,
     register,
@@ -33,7 +35,12 @@ const NewBoard: React.FC<PropsType> = ({ dark }) => {
   });
 
   const onSubmit: SubmitHandler<NewBoardType> = async (data) => {
-    console.log(data);
+    try {
+      const response = await createNewBoard(data);
+      setBoards((boards) => [...boards, response.data]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

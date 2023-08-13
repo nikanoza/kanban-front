@@ -10,6 +10,7 @@ function App() {
   const { modalsInfo, updateModals } = useModals();
 
   const [boards, setBoards] = useState<BoardType[]>([]);
+  console.log(boards);
 
   useEffect(() => {
     const getBoardsData = async () => {
@@ -41,7 +42,7 @@ function App() {
       </Content>
       {modalsInfo.NewBoard ? (
         <Modal onClick={() => updateModals("NewBoard")}>
-          <NewBoard dark={dark} />
+          <NewBoard dark={dark} setBoards={setBoards} />
         </Modal>
       ) : null}
     </Main>

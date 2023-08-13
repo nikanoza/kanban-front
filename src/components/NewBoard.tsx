@@ -8,6 +8,7 @@ import {
   useFieldArray,
 } from "react-hook-form";
 import { newBoardSchema } from "../schemas";
+import { Close } from "../svg";
 
 type PropsType = {
   dark: boolean;
@@ -22,7 +23,7 @@ const NewBoard: React.FC<PropsType> = ({ dark }) => {
   } = useForm<NewBoardType>({
     resolver: zodResolver(newBoardSchema),
     defaultValues: {
-      columns: [],
+      columns: ["", ""],
     },
   });
 
@@ -47,7 +48,13 @@ const NewBoard: React.FC<PropsType> = ({ dark }) => {
           placeholder="e.g. Web Design"
           {...register("title")}
           id="board-title"
+          style={{
+            borderColor: errors.title
+              ? "var(--error)"
+              : "rgba(130, 143, 163, 0.25)",
+          }}
         />
+        <Error>{errors.title && errors.title.message}</Error>
         <Label dark={dark} htmlFor="">
           Board Columns
         </Label>
@@ -57,28 +64,47 @@ const NewBoard: React.FC<PropsType> = ({ dark }) => {
           render={() => (
             <div>
               {fields.map((column, index) => (
-                <div key={index}>
-                  <Input
-                    dark={dark}
-                    placeholder={`e.g. Column ${index + 1}`}
-                    {...column}
-                  />
-                  {index > 1 && (
-                    <button type="button" onClick={() => remove(index)}>
-                      Remove
-                    </button>
-                  )}
-                  {errors.columns?.[index] && (
-                    <p>{errors.columns[index]?.message}</p>
-                  )}
+                <div key={column.id} style={{ width: "100%" }}>
+                  <Wrapper>
+                    <Input
+                      dark={dark}
+                      placeholder={`e.g. Column ${index + 1}`}
+                      {...register(`columns.${index}`)}
+                      style={{
+                        marginBottom: 0,
+                        borderColor: errors.columns?.[index]
+                          ? "var(--error)"
+                          : "rgba(130, 143, 163, 0.25)",
+                      }}
+                    />
+                    <CloseButton
+                      type="button"
+                      onClick={() => {
+                        remove(index);
+                        console.log(fields);
+                      }}
+                    >
+                      <Close />
+                    </CloseButton>
+                  </Wrapper>
+                  <Error>
+                    {errors.columns?.[index] && errors.columns[index]?.message}
+                  </Error>
                 </div>
               ))}
-              <button type="button" onClick={() => append("")}>
-                Add Column
-              </button>
+              <AddColumn
+                type="button"
+                dark={dark}
+                onClick={() => {
+                  append("");
+                }}
+              >
+                + Add New Column
+              </AddColumn>
             </div>
           )}
         />
+        <SubmitButton type="submit">Create New Board</SubmitButton>
       </Form>
     </Main>
   );
@@ -128,9 +154,8 @@ const Input = styled.input(
     width: 100%;
     height: 40px;
     padding: 0 16px;
-    margin-bottom: 12px;
     border-radius: 4px;
-    border: 1px solid rgba(130, 143, 163, 0.25);
+    border: 1px solid;
     background: ${dark ? "var(--darkGray)" : "var(--white)"};
     color: ${dark ? "var(--light)" : "var(--dark) "};
     &::placeholder {
@@ -138,3 +163,57 @@ const Input = styled.input(
     }
   `
 );
+
+const Wrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const CloseButton = styled.button`
+  border: none;
+  background: transparent;
+  margin-left: 16px;
+`;
+
+const Error = styled.p`
+  height: 12px;
+  color: var(--error);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 23px;
+`;
+
+const AddColumn = styled.button(
+  ({ dark }: ThemeProps) => css`
+    width: 100%;
+    border: none;
+    height: 40px;
+    border-radius: 20px;
+    background: ${dark ? "var(--light)" : "rgba(99, 95, 199, 0.1)"};
+    margin-top: 12px;
+    color: var(--violet);
+    text-align: center;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 23px;
+  `
+);
+
+const SubmitButton = styled.button`
+  width: 100%;
+  border: none;
+  height: 40px;
+  border-radius: 20px;
+  color: var(--light);
+  background: var(--violet);
+  margin-top: 24px;
+  text-align: center;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 23px;
+`;

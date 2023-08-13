@@ -4,14 +4,22 @@ const newBoardSchema = z.object({
   title: z
     .string()
     .min(3)
-    .regex(/^[a-zA-Z\s]+$/, {
+    .refine((value) => value.trim().length > 0, {
+      message: "Title can't be empty",
+    })
+    .refine((value) => /^[a-zA-Z\s]+$/.test(value), {
       message: "Title must contain only English letters",
     }),
   columns: z
     .array(
-      z.string().regex(/^[a-zA-Z\s]+$/, {
-        message: "Column must contain only English letters",
-      })
+      z
+        .string()
+        .refine((value) => value.trim().length > 0, {
+          message: "Column can't be empty",
+        })
+        .refine((value) => /^[a-zA-Z\s]+$/.test(value), {
+          message: "Column must contain only English letters",
+        })
     )
     .default([]),
 });

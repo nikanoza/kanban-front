@@ -33,9 +33,11 @@ function App() {
       >
         {boards.length > 0 ? null : <Empty />}
       </Content>
-      <Modal>
-        <NewBoard dark={dark} />
-      </Modal>
+      {modalsInfo.NewBoard ? (
+        <Modal>
+          <NewBoard dark={dark} />
+        </Modal>
+      ) : null}
     </Main>
   );
 }

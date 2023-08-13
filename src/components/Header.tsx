@@ -10,6 +10,8 @@ type PropsType = {
   toLight: () => void;
   boards: BoardType[];
   updateModals: (property: key) => void;
+  activeBoard: BoardType | null;
+  setActiveBoard: React.Dispatch<React.SetStateAction<BoardType | null>>;
 };
 
 const Header: React.FC<PropsType> = ({
@@ -18,6 +20,8 @@ const Header: React.FC<PropsType> = ({
   toDark,
   toLight,
   updateModals,
+  activeBoard,
+  setActiveBoard,
 }) => {
   const [showMenu, setShoeMenu] = useState<boolean>(false);
 
@@ -28,7 +32,9 @@ const Header: React.FC<PropsType> = ({
   return (
     <HeaderElem dark={dark}>
       <LogoMobile />
-      <BoardSelect dark={dark}>No Boards</BoardSelect>
+      <BoardSelect dark={dark}>
+        {activeBoard ? activeBoard.title : "No Boards"}
+      </BoardSelect>
       <DownArrow />
       <PlusBox>
         <Plus onClick={() => updateModals("NewBoard")} />
@@ -42,6 +48,7 @@ const Header: React.FC<PropsType> = ({
           toDark={toDark}
           toLight={toLight}
           updateModals={updateModals}
+          setActiveBoard={setActiveBoard}
         />
       ) : null}
     </HeaderElem>

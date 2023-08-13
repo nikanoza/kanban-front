@@ -11,6 +11,7 @@ type PropsType = {
   toLight: () => void;
   closeMenu: () => void;
   updateModals: (property: key) => void;
+  setActiveBoard: React.Dispatch<React.SetStateAction<BoardType | null>>;
 };
 
 const MobileMenu: React.FC<PropsType> = ({
@@ -20,6 +21,7 @@ const MobileMenu: React.FC<PropsType> = ({
   toDark,
   toLight,
   updateModals,
+  setActiveBoard,
 }) => {
   const modalRef = useRef<HTMLDivElement | null>(null);
 
@@ -37,9 +39,9 @@ const MobileMenu: React.FC<PropsType> = ({
         <Title>ALL BOARDS ({boards.length})</Title>
         <BoardList>
           {boards.map((board) => (
-            <BoardTitle>
+            <BoardTitle key={board.id}>
               <BoardIcon />
-              <Text>{board.title}</Text>
+              <Text onClick={() => setActiveBoard(board)}>{board.title}</Text>
             </BoardTitle>
           ))}
           <BoardTitle>
@@ -127,6 +129,7 @@ const Text = styled.h2`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  cursor: pointer;
 `;
 
 const Panel = styled.div(

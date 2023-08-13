@@ -10,13 +10,15 @@ function App() {
   const { modalsInfo, updateModals } = useModals();
 
   const [boards, setBoards] = useState<BoardType[]>([]);
-  console.log(boards);
+  const [activeBoard, setActiveBoard] = useState<BoardType | null>(null);
+  console.log(activeBoard);
 
   useEffect(() => {
     const getBoardsData = async () => {
       try {
         const response = await getAllBoards();
         setBoards(response.data);
+        // setActiveBoard(response.data[0]);
       } catch (error) {
         alert(error);
       }
@@ -33,6 +35,8 @@ function App() {
         toLight={toLight}
         boards={boards}
         updateModals={updateModals}
+        activeBoard={activeBoard}
+        setActiveBoard={setActiveBoard}
       />
       <Content
         dark={dark}

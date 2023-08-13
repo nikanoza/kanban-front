@@ -21,11 +21,14 @@ const NewBoard: React.FC<PropsType> = ({ dark }) => {
     formState: { errors },
   } = useForm<NewBoardType>({
     resolver: zodResolver(newBoardSchema),
+    defaultValues: {
+      columns: [],
+    },
   });
 
   const { fields, append, remove } = useFieldArray({
-    control,
     name: "columns",
+    control: control,
   });
 
   const onSubmit: SubmitHandler<NewBoardType> = async (data) => {
@@ -51,9 +54,9 @@ const NewBoard: React.FC<PropsType> = ({ dark }) => {
         <Controller
           name="columns"
           control={control}
-          render={({ field }) => (
+          render={() => (
             <div>
-              {field.map((column, index) => (
+              {fields.map((column, index) => (
                 <div key={index}>
                   <Input
                     dark={dark}
@@ -61,7 +64,7 @@ const NewBoard: React.FC<PropsType> = ({ dark }) => {
                     {...column}
                   />
                   {index > 1 && (
-                    <button type="button" onClick={() => field.remove(index)}>
+                    <button type="button" onClick={() => remove(index)}>
                       Remove
                     </button>
                   )}
@@ -70,7 +73,7 @@ const NewBoard: React.FC<PropsType> = ({ dark }) => {
                   )}
                 </div>
               ))}
-              <button type="button" onClick={() => field.append("")}>
+              <button type="button" onClick={() => append("")}>
                 Add Column
               </button>
             </div>

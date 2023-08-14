@@ -22,6 +22,7 @@ const Main = styled.div`
   width: 100%;
   display: flex;
   padding: 0 16px;
+  margin: auto;
   flex-direction: column;
   justify-content: center;
   align-items: center;

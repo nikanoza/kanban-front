@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { Empty, Header, Modal, NewBoard } from "./components";
+import { Board, Empty, Header, Modal, NewBoard } from "./components";
 import { useEffect, useState } from "react";
 import { BoardType, ThemeProps } from "./types";
 import { getAllBoards } from "./services/boardServices";
@@ -18,7 +18,7 @@ function App() {
       try {
         const response = await getAllBoards();
         setBoards(response.data);
-        // setActiveBoard(response.data[0]);
+        setActiveBoard(response.data[0]);
       } catch (error) {
         alert(error);
       }
@@ -42,7 +42,11 @@ function App() {
         dark={dark}
         style={{ alignItems: boards.length > 0 ? "flex-start" : "center" }}
       >
-        {boards.length > 0 ? null : <Empty updateModals={updateModals} />}
+        {boards.length > 0 && activeBoard ? (
+          <Board board={activeBoard} />
+        ) : (
+          <Empty updateModals={updateModals} />
+        )}
       </Content>
       {modalsInfo.NewBoard ? (
         <Modal onClick={() => updateModals("NewBoard")}>
@@ -62,10 +66,11 @@ const Main = styled.main`
 
 const Content = styled.section(
   ({ dark }: ThemeProps) => css`
-    width: 100%;
+    min-width: 100vw;
     min-height: calc(100vh - 64px);
     display: flex;
-    justify-content: center;
+    padding: 24px 16px;
+    overflow: auto;
     background-color: ${dark ? "var(--darkBg)" : "var(--veryLightGray)"};
   `
 );

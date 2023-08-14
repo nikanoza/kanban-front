@@ -17,6 +17,7 @@ import {
   Label,
   Main,
   SubmitButton,
+  TextArea,
   Title,
   Wrapper,
 } from "./styled-components";
@@ -69,9 +70,9 @@ const NewTask: React.FC<PropsType> = ({ dark }) => {
         <Label dark={dark} htmlFor="task-title">
           Description
         </Label>
-        <Input
+        <TextArea
           dark={dark}
-          placeholder="e.g. Web Design description"
+          placeholder="e.g. It’s always good to take a break. This 15 minute break will  recharge the batteries a little."
           {...register("description")}
           id="task-description"
           style={{
@@ -79,7 +80,7 @@ const NewTask: React.FC<PropsType> = ({ dark }) => {
               ? "var(--error)"
               : "rgba(130, 143, 163, 0.25)",
           }}
-        />
+        ></TextArea>
         <Error>{errors.description && errors.description.message}</Error>
         <Controller
           name="subtasks"

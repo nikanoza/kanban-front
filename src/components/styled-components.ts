@@ -53,6 +53,22 @@ export const Input = styled.input(
   `
 );
 
+export const TextArea = styled.textarea(
+  ({ dark }: ThemeProps) => css`
+    width: 100%;
+    height: 112px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid;
+    resize: none;
+    background: ${dark ? "var(--darkGray)" : "var(--white)"};
+    color: ${dark ? "var(--light)" : "var(--dark) "};
+    &::placeholder {
+      opacity: 0.25;
+    }
+  `
+);
+
 export const Error = styled.p`
   height: 12px;
   color: var(--error);

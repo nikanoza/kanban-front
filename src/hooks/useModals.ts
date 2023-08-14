@@ -31,8 +31,6 @@ const useModals = () => {
     setModalsInfo(data);
   };
 
-  const addTask = () => {};
-
   return { modalsInfo, updateModals };
 };
 

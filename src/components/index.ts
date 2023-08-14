@@ -4,4 +4,4 @@ export { default as Modal } from "./Modal";
 export { default as MobileMenu } from "./MobileMenu";
 export { default as NewBoard } from "./NewBoard";
 export { default as Board } from "./Board";
-export { default as NewTask } from "./NewBoard";
+export { default as NewTask } from "./NewTask";

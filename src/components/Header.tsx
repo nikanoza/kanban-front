@@ -37,7 +37,11 @@ const Header: React.FC<PropsType> = ({
       </BoardSelect>
       <DownArrow />
       <PlusBox>
-        <Plus onClick={() => {}} />
+        <Plus
+          onClick={() => {
+            updateModals("NewTask");
+          }}
+        />
       </PlusBox>
       <Options onClick={() => setShoeMenu(true)} />
       {showMenu ? (

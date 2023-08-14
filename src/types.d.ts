@@ -31,3 +31,9 @@ export interface NewBoardType {
   title: string;
   columns: string[];
 }
+
+export interface NewTaskType {
+  title: string;
+  description: string;
+  subtasks: string[];
+}

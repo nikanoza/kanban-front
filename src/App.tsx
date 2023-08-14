@@ -1,17 +1,15 @@
 import styled, { css } from "styled-components";
-import { Board, Empty, Header, Modal, NewBoard } from "./components";
+import { Board, Empty, Header, Modal, NewBoard, NewTask } from "./components";
 import { useEffect, useState } from "react";
 import { BoardType, ThemeProps } from "./types";
 import { getAllBoards } from "./services/boardServices";
-import { useModals, useTheme } from "./hooks";
+import { useBoard, useModals, useTheme } from "./hooks";
 
 function App() {
   const { dark, toDark, toLight } = useTheme();
   const { modalsInfo, updateModals } = useModals();
-
-  const [boards, setBoards] = useState<BoardType[]>([]);
+  const { boards, setBoards, addTask } = useBoard();
   const [activeBoard, setActiveBoard] = useState<BoardType | null>(null);
-  console.log(activeBoard);
 
   useEffect(() => {
     const getBoardsData = async () => {
@@ -25,7 +23,7 @@ function App() {
     };
 
     getBoardsData();
-  }, []);
+  }, [setBoards]);
 
   return (
     <Main>
@@ -51,6 +49,16 @@ function App() {
       {modalsInfo.NewBoard ? (
         <Modal onClick={() => updateModals("NewBoard")}>
           <NewBoard dark={dark} setBoards={setBoards} />
+        </Modal>
+      ) : null}
+      {modalsInfo.NewTask && activeBoard ? (
+        <Modal onClick={() => updateModals("NewTask")}>
+          <NewTask
+            dark={dark}
+            board={activeBoard}
+            addTask={addTask}
+            updateModals={updateModals}
+          />
         </Modal>
       ) : null}
     </Main>

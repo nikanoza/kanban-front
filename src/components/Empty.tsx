@@ -1,10 +1,17 @@
 import styled from "styled-components";
+import { key } from "../hooks/useModals";
 
-const Empty = () => {
+type PropsType = {
+  updateModals: (property: key) => void;
+};
+
+const Empty: React.FC<PropsType> = ({ updateModals }) => {
   return (
     <Main>
       <Text>This board is empty. Create a new column to get started.</Text>
-      <NewBoardButton>+ Add New Column</NewBoardButton>
+      <NewBoardButton onClick={() => updateModals("NewBoard")}>
+        + Add New Board
+      </NewBoardButton>
     </Main>
   );
 };
@@ -15,6 +22,7 @@ const Main = styled.div`
   width: 100%;
   display: flex;
   padding: 0 16px;
+  margin: auto;
   flex-direction: column;
   justify-content: center;
   align-items: center;

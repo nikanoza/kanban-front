@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 import { BoardType, ThemeProps } from "../types";
 import { useRef } from "react";
 import { BoardIcon, Moon, Sun } from "../svg";
+import { key } from "../hooks/useModals";
 
 type PropsType = {
   dark: boolean;
@@ -9,6 +10,8 @@ type PropsType = {
   toDark: () => void;
   toLight: () => void;
   closeMenu: () => void;
+  updateModals: (property: key) => void;
+  setActiveBoard: React.Dispatch<React.SetStateAction<BoardType | null>>;
 };
 
 const MobileMenu: React.FC<PropsType> = ({
@@ -17,6 +20,8 @@ const MobileMenu: React.FC<PropsType> = ({
   boards,
   toDark,
   toLight,
+  updateModals,
+  setActiveBoard,
 }) => {
   const modalRef = useRef<HTMLDivElement | null>(null);
 
@@ -34,14 +39,19 @@ const MobileMenu: React.FC<PropsType> = ({
         <Title>ALL BOARDS ({boards.length})</Title>
         <BoardList>
           {boards.map((board) => (
-            <BoardTitle>
+            <BoardTitle key={board.id}>
               <BoardIcon />
-              <Text>{board.title}</Text>
+              <Text onClick={() => setActiveBoard(board)}>{board.title}</Text>
             </BoardTitle>
           ))}
           <BoardTitle>
             <BoardIcon color="#635FC7" />
-            <Text style={{ color: "#635FC7" }}>+ Create New Board</Text>
+            <Text
+              style={{ color: "#635FC7" }}
+              onClick={() => updateModals("NewBoard")}
+            >
+              + Create New Board
+            </Text>
           </BoardTitle>
         </BoardList>
         <Panel dark={dark}>
@@ -119,6 +129,7 @@ const Text = styled.h2`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  cursor: pointer;
 `;
 
 const Panel = styled.div(

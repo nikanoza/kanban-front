@@ -1,7 +1,23 @@
+import { useRef } from "react";
 import styled from "styled-components";
 
-const Modal: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return <Main>{children}</Main>;
+const Modal: React.FC<{ children: React.ReactNode; onClick: () => void }> = ({
+  children,
+  onClick,
+}) => {
+  const mainRef = useRef<HTMLDivElement>(null);
+
+  const closeModal: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    if (event.target === mainRef.current) {
+      onClick();
+    }
+  };
+
+  return (
+    <Main ref={mainRef} onClick={closeModal}>
+      {children}
+    </Main>
+  );
 };
 
 export default Modal;

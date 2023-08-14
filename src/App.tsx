@@ -43,7 +43,7 @@ function App() {
         style={{ alignItems: boards.length > 0 ? "flex-start" : "center" }}
       >
         {boards.length > 0 && activeBoard ? (
-          <Board board={activeBoard} />
+          <Board board={activeBoard} dark={dark} />
         ) : (
           <Empty updateModals={updateModals} />
         )}

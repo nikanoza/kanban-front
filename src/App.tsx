@@ -8,7 +8,7 @@ import { useBoard, useModals, useTheme } from "./hooks";
 function App() {
   const { dark, toDark, toLight } = useTheme();
   const { modalsInfo, updateModals } = useModals();
-  const { boards, setBoards } = useBoard();
+  const { boards, setBoards, addTask } = useBoard();
   const [activeBoard, setActiveBoard] = useState<BoardType | null>(null);
 
   useEffect(() => {
@@ -53,7 +53,12 @@ function App() {
       ) : null}
       {modalsInfo.NewTask && activeBoard ? (
         <Modal onClick={() => updateModals("NewTask")}>
-          <NewTask dark={dark} columns={activeBoard.columns} />
+          <NewTask
+            dark={dark}
+            board={activeBoard}
+            addTask={addTask}
+            updateModals={updateModals}
+          />
         </Modal>
       ) : null}
     </Main>

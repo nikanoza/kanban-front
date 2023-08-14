@@ -26,7 +26,7 @@ const Board: React.FC<PropsType> = ({ board, dark }) => {
                 .slice()
                 .filter((item) => !item.active).length;
               return (
-                <TaskItem dark={dark}>
+                <TaskItem dark={dark} key={task.id}>
                   <TaskTitle dark={dark}>{task.title}</TaskTitle>
                   <SubtasksAmount>
                     {finishedAmount} of {task.subtasks.length}

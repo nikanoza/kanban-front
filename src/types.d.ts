@@ -37,3 +37,7 @@ export interface NewTaskType {
   description: string;
   subtasks: string[];
 }
+
+export interface NewTaskAxios extends NewTaskType {
+  columnId: string;
+}

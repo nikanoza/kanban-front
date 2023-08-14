@@ -5,7 +5,13 @@ import {
   Controller,
   useFieldArray,
 } from "react-hook-form";
-import { ColumnType, NewTaskType } from "../types";
+import {
+  BoardType,
+  ColumnType,
+  NewTaskAxios,
+  NewTaskType,
+  TaskType,
+} from "../types";
 import { NewTaskSchema } from "../schemas";
 import { Close, DownArrow } from "../svg";
 import {
@@ -26,14 +32,25 @@ import {
   Wrapper,
 } from "./styled-components";
 import { useState } from "react";
+import { createNewTask } from "../services/taskService";
+import { key } from "../hooks/useModals";
 
 type PropsType = {
   dark: boolean;
-  columns: ColumnType[];
+  board: BoardType;
+  addTask: (data: TaskType, boardId: string, columnId: string) => void;
+  updateModals: (property: key) => void;
 };
 
-const NewTask: React.FC<PropsType> = ({ dark, columns }) => {
-  const [activeColumn, setActiveColumn] = useState<ColumnType>(columns[0]);
+const NewTask: React.FC<PropsType> = ({
+  dark,
+  board,
+  addTask,
+  updateModals,
+}) => {
+  const [activeColumn, setActiveColumn] = useState<ColumnType>(
+    board.columns[0]
+  );
   const [showColumns, setShowColumns] = useState<boolean>(false);
 
   const {
@@ -54,7 +71,16 @@ const NewTask: React.FC<PropsType> = ({ dark, columns }) => {
   });
 
   const onSubmit: SubmitHandler<NewTaskType> = async (data) => {
-    console.log(data);
+    const axiosData: NewTaskAxios = { ...data, columnId: activeColumn.id };
+
+    try {
+      const response = await createNewTask(axiosData);
+      addTask(response.data, board.id, activeColumn.id);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      updateModals("NewTask");
+    }
   };
 
   return (
@@ -148,7 +174,7 @@ const NewTask: React.FC<PropsType> = ({ dark, columns }) => {
           </div>
           {showColumns ? (
             <SelectPanel dark={dark}>
-              {columns.map((col) => (
+              {board.columns.map((col) => (
                 <PanelText
                   key={col.id}
                   onClick={() => {

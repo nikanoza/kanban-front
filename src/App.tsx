@@ -51,9 +51,9 @@ function App() {
           <NewBoard dark={dark} setBoards={setBoards} />
         </Modal>
       ) : null}
-      {modalsInfo.NewTask ? (
+      {modalsInfo.NewTask && activeBoard ? (
         <Modal onClick={() => updateModals("NewTask")}>
-          <NewTask dark={dark} columns={activeBoard?.columns} />
+          <NewTask dark={dark} columns={activeBoard.columns} />
         </Modal>
       ) : null}
     </Main>

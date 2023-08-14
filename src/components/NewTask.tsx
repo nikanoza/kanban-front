@@ -17,6 +17,8 @@ import {
   Input,
   Label,
   Main,
+  PanelText,
+  SelectPanel,
   SelectText,
   SubmitButton,
   TextArea,
@@ -144,6 +146,22 @@ const NewTask: React.FC<PropsType> = ({ dark, columns }) => {
           <div style={{ rotate: showColumns ? "180deg" : "0deg" }}>
             <DownArrow onClick={() => setShowColumns(!showColumns)} />
           </div>
+          {showColumns ? (
+            <SelectPanel dark={dark}>
+              {columns.map((col) => (
+                <PanelText
+                  key={col.id}
+                  onClick={() => {
+                    setShowColumns(false);
+                    setActiveColumn(col);
+                  }}
+                  type="button"
+                >
+                  {col.title}
+                </PanelText>
+              ))}
+            </SelectPanel>
+          ) : null}
         </ColumnSelect>
         <SubmitButton type="submit">Create Task</SubmitButton>
       </Form>

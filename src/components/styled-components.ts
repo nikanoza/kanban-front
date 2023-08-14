@@ -145,3 +145,31 @@ export const SelectText = styled.h3`
   font-weight: 500;
   line-height: 23px;
 `;
+
+export const SelectPanel = styled.div(
+  ({ dark }: ThemeProps) => css`
+    width: 100%;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    border-radius: 8px;
+    background: ${dark ? "var(--darkBg)" : "var(--light)"};
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0px 10px 20px 0px rgba(54, 78, 126, 0.25);
+  `
+);
+
+export const PanelText = styled.button`
+  border: none;
+  text-align: left;
+  background: transparent;
+  color: var(--grey);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 23px;
+  cursor: pointer;
+`;

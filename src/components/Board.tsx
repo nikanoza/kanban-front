@@ -21,11 +21,19 @@ const Board: React.FC<PropsType> = ({ board, dark }) => {
             </ColumnTitle>
           </TitleWrapper>
           <TaskItems>
-            {column.tasks.map((task) => (
-              <TaskItem dark={dark}>
-                <TaskTitle dark={dark}>{task.title}</TaskTitle>
-              </TaskItem>
-            ))}
+            {column.tasks.map((task) => {
+              const finishedAmount = task.subtasks
+                .slice()
+                .filter((item) => !item.active).length;
+              return (
+                <TaskItem dark={dark}>
+                  <TaskTitle dark={dark}>{task.title}</TaskTitle>
+                  <SubtasksAmount>
+                    {finishedAmount} of {task.subtasks.length}
+                  </SubtasksAmount>
+                </TaskItem>
+              );
+            })}
           </TaskItems>
         </Col>
       ))}
@@ -96,3 +104,12 @@ const TaskTitle = styled.h3(
     line-height: normal;
   `
 );
+
+const SubtasksAmount = styled.h4`
+  margin-top: 8px;
+  color: var(--grey);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+`;

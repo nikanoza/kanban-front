@@ -53,7 +53,7 @@ function App() {
       ) : null}
       {modalsInfo.NewTask ? (
         <Modal onClick={() => updateModals("NewTask")}>
-          <NewTask dark={dark} />
+          <NewTask dark={dark} columns={activeBoard?.columns} />
         </Modal>
       ) : null}
     </Main>

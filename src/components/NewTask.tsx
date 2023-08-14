@@ -5,28 +5,35 @@ import {
   Controller,
   useFieldArray,
 } from "react-hook-form";
-import { NewTaskType, ThemeProps } from "../types";
+import { ColumnType, NewTaskType } from "../types";
 import { NewTaskSchema } from "../schemas";
-import { Close } from "../svg";
+import { Close, DownArrow } from "../svg";
 import {
   AddSubtask,
   CloseButton,
+  ColumnSelect,
   Error,
   Form,
   Input,
   Label,
   Main,
+  SelectText,
   SubmitButton,
   TextArea,
   Title,
   Wrapper,
 } from "./styled-components";
+import { useState } from "react";
 
 type PropsType = {
   dark: boolean;
+  columns: ColumnType[];
 };
 
-const NewTask: React.FC<PropsType> = ({ dark }) => {
+const NewTask: React.FC<PropsType> = ({ dark, columns }) => {
+  const [activeColumn, setActiveColumn] = useState<ColumnType>(columns[0]);
+  const [showColumns, setShowColumns] = useState<boolean>(false);
+
   const {
     handleSubmit,
     register,
@@ -67,7 +74,7 @@ const NewTask: React.FC<PropsType> = ({ dark }) => {
           }}
         />
         <Error>{errors.title && errors.title.message}</Error>
-        <Label dark={dark} htmlFor="task-title">
+        <Label dark={dark} htmlFor="task-description">
           Description
         </Label>
         <TextArea
@@ -119,6 +126,7 @@ const NewTask: React.FC<PropsType> = ({ dark }) => {
               <AddSubtask
                 type="button"
                 dark={dark}
+                style={{ marginBottom: "24px" }}
                 onClick={() => {
                   append("");
                 }}
@@ -128,6 +136,15 @@ const NewTask: React.FC<PropsType> = ({ dark }) => {
             </div>
           )}
         />
+        <Label dark={dark} htmlFor="column-select">
+          Status
+        </Label>
+        <ColumnSelect dark={dark}>
+          <SelectText>{activeColumn.title}</SelectText>
+          <div style={{ rotate: showColumns ? "180deg" : "0deg" }}>
+            <DownArrow onClick={() => setShowColumns(!showColumns)} />
+          </div>
+        </ColumnSelect>
         <SubmitButton type="submit">Create Task</SubmitButton>
       </Form>
     </Main>

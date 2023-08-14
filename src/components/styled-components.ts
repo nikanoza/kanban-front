@@ -122,3 +122,26 @@ export const SubmitButton = styled.button`
   font-weight: 700;
   line-height: 23px;
 `;
+
+export const ColumnSelect = styled.div(
+  ({ dark }: ThemeProps) => css`
+    width: 100%;
+    height: 40px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid rgba(130, 143, 163, 0.25);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: ${dark ? "var(--darkGray)" : "var(--white)"};
+    color: ${dark ? "var(--light)" : "var(--dark) "};
+    position: relative;
+  `
+);
+
+export const SelectText = styled.h3`
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 23px;
+`;

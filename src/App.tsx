@@ -77,7 +77,12 @@ function App() {
       ) : null}
       {modalsInfo.Task && activeBoard && activeTask ? (
         <Modal onClick={() => updateModals("Task")}>
-          <TaskInfo dark={dark} task={activeTask} boardId={activeBoard.id} />
+          <TaskInfo
+            dark={dark}
+            task={activeTask}
+            boardId={activeBoard.id}
+            boards={boards}
+          />
         </Modal>
       ) : null}
     </Main>

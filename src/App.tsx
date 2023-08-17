@@ -16,7 +16,7 @@ import { useBoard, useModals, useTheme } from "./hooks";
 function App() {
   const { dark, toDark, toLight } = useTheme();
   const { modalsInfo, updateModals } = useModals();
-  const { boards, setBoards, addTask } = useBoard();
+  const { boards, setBoards, addTask, subtaskChangeStatus } = useBoard();
   const [activeBoard, setActiveBoard] = useState<BoardType | null>(null);
   const [activeTask, setActiveTask] = useState<TaskType | null>(null);
 
@@ -80,8 +80,8 @@ function App() {
           <TaskInfo
             dark={dark}
             task={activeTask}
-            boardId={activeBoard.id}
             board={activeBoard}
+            subtaskChangeStatus={subtaskChangeStatus}
           />
         </Modal>
       ) : null}

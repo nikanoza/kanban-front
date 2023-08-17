@@ -8,16 +8,27 @@ type PropsType = {
   dark: boolean;
   task: TaskType;
   board: BoardType;
+  subtaskChangeStatus: (
+    boardId: string,
+    columnId: string,
+    taskId: string,
+    subtask: SubtaskType
+  ) => void;
 };
 
-const TaskInfo: React.FC<PropsType> = ({ dark, task, board }) => {
+const TaskInfo: React.FC<PropsType> = ({
+  dark,
+  task,
+  board,
+  subtaskChangeStatus,
+}) => {
   const finishedAmount = task.subtasks
     .slice()
     .filter((item) => !item.active).length;
 
-  const columnTitle = board.columns.find((elem) =>
+  const column = board.columns.find((elem) =>
     elem.tasks.find((item) => task.id === item.id)
-  )?.title;
+  );
 
   const changeStatusHandler = async (subtask: SubtaskType) => {
     try {
@@ -30,6 +41,10 @@ const TaskInfo: React.FC<PropsType> = ({ dark, task, board }) => {
       );
     } catch (error) {
       console.log(error);
+    } finally {
+      if (column) {
+        subtaskChangeStatus(board.id, column.id, task.id, subtask);
+      }
     }
   };
   return (
@@ -45,7 +60,10 @@ const TaskInfo: React.FC<PropsType> = ({ dark, task, board }) => {
       <TaskList>
         {task.subtasks.map((item) => (
           <TaskItem dark={dark} key={item.id}>
-            <Checkbox active={item.active} onClick={changeStatusHandler}>
+            <Checkbox
+              active={item.active}
+              onClick={() => changeStatusHandler(item)}
+            >
               {!item.active ? <Check /> : null}
             </Checkbox>
             <SubtaskTitle dark={dark} active={item.active}>
@@ -56,7 +74,7 @@ const TaskInfo: React.FC<PropsType> = ({ dark, task, board }) => {
       </TaskList>
       <Status dark={dark}>Current Status</Status>
       <ColumnSelect dark={dark}>
-        <SelectText>{columnTitle}</SelectText>
+        <SelectText>{column?.title}</SelectText>
       </ColumnSelect>
     </Main>
   );

@@ -7,13 +7,17 @@ type PropsType = {
   dark: boolean;
   task: TaskType;
   boardId: string;
-  boards: BoardType[];
+  board: BoardType;
 };
 
-const TaskInfo: React.FC<PropsType> = ({ dark, task, boards, boardId }) => {
+const TaskInfo: React.FC<PropsType> = ({ dark, task, board, boardId }) => {
   const finishedAmount = task.subtasks
     .slice()
     .filter((item) => !item.active).length;
+
+  const columnTitle = board.columns.find((elem) =>
+    elem.tasks.find((item) => task.id === item.id)
+  )?.title;
   return (
     <Main dark={dark}>
       <Header>
@@ -38,7 +42,7 @@ const TaskInfo: React.FC<PropsType> = ({ dark, task, boards, boardId }) => {
       </TaskList>
       <Status dark={dark}>Current Status</Status>
       <ColumnSelect dark={dark}>
-        <SelectText>{task.title}</SelectText>
+        <SelectText>{columnTitle}</SelectText>
       </ColumnSelect>
     </Main>
   );

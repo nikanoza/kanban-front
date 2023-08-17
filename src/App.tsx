@@ -81,7 +81,7 @@ function App() {
             dark={dark}
             task={activeTask}
             boardId={activeBoard.id}
-            boards={boards}
+            board={activeBoard}
           />
         </Modal>
       ) : null}

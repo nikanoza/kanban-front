@@ -1,16 +1,16 @@
 import styled, { css } from "styled-components";
-import { BoardType, TaskType, ThemeProps } from "../types";
+import { BoardType, SubtaskType, TaskType, ThemeProps } from "../types";
 import { ColumnSelect, Main, SelectText } from "./styled-components";
 import { Check, Options } from "../svg";
+import { changeSubtaskStatus } from "../services/subtaskService";
 
 type PropsType = {
   dark: boolean;
   task: TaskType;
-  boardId: string;
   board: BoardType;
 };
 
-const TaskInfo: React.FC<PropsType> = ({ dark, task, board, boardId }) => {
+const TaskInfo: React.FC<PropsType> = ({ dark, task, board }) => {
   const finishedAmount = task.subtasks
     .slice()
     .filter((item) => !item.active).length;
@@ -18,6 +18,20 @@ const TaskInfo: React.FC<PropsType> = ({ dark, task, board, boardId }) => {
   const columnTitle = board.columns.find((elem) =>
     elem.tasks.find((item) => task.id === item.id)
   )?.title;
+
+  const changeStatusHandler = async (subtask: SubtaskType) => {
+    try {
+      await changeSubtaskStatus(
+        {
+          title: subtask.title,
+          active: !subtask.active,
+        },
+        subtask.id
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Main dark={dark}>
       <Header>
@@ -31,7 +45,7 @@ const TaskInfo: React.FC<PropsType> = ({ dark, task, board, boardId }) => {
       <TaskList>
         {task.subtasks.map((item) => (
           <TaskItem dark={dark} key={item.id}>
-            <Checkbox active={item.active}>
+            <Checkbox active={item.active} onClick={changeStatusHandler}>
               {!item.active ? <Check /> : null}
             </Checkbox>
             <SubtaskTitle dark={dark} active={item.active}>

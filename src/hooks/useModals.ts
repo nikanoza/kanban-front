@@ -31,7 +31,13 @@ const useModals = () => {
     setModalsInfo(data);
   };
 
-  return { modalsInfo, updateModals };
+  const openEditTask = () => {
+    setModalsInfo((state) => {
+      return { ...state, Task: false, EditTask: true };
+    });
+  };
+
+  return { modalsInfo, updateModals, openEditTask };
 };
 
 export default useModals;

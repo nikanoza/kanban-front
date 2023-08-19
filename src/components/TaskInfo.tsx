@@ -4,7 +4,6 @@ import { ColumnSelect, Main, SelectText } from "./styled-components";
 import { Check, Options } from "../svg";
 import { changeSubtaskStatus } from "../services/subtaskService";
 import { useState } from "react";
-import { key } from "../hooks/useModals";
 
 type PropsType = {
   dark: boolean;
@@ -16,7 +15,7 @@ type PropsType = {
     taskId: string,
     subtask: SubtaskType
   ) => void;
-  updateModals: (property: key) => void;
+  openEditTask: () => void;
 };
 
 const TaskInfo: React.FC<PropsType> = ({
@@ -24,7 +23,7 @@ const TaskInfo: React.FC<PropsType> = ({
   task,
   board,
   subtaskChangeStatus,
-  updateModals,
+  openEditTask,
 }) => {
   const [showPanel, setShowPanel] = useState<boolean>(false);
 
@@ -59,20 +58,12 @@ const TaskInfo: React.FC<PropsType> = ({
         <Panel dark={dark}>
           <EditText
             onClick={() => {
-              updateModals("Task");
-              updateModals("EditTask");
+              openEditTask();
             }}
           >
             Edit Task
           </EditText>
-          <DeleteText
-            onClick={() => {
-              updateModals("Task");
-              updateModals("DeleteTask");
-            }}
-          >
-            Delete Task
-          </DeleteText>
+          <DeleteText onClick={() => {}}>Delete Task</DeleteText>
         </Panel>
       ) : null}
       <Header>

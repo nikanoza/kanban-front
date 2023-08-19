@@ -41,3 +41,8 @@ export interface NewTaskType {
 export interface NewTaskAxios extends NewTaskType {
   columnId: string;
 }
+
+export interface UpdateSubtask {
+  title: string;
+  active: boolean;
+}

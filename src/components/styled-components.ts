@@ -8,6 +8,7 @@ export const Main = styled.div(
     max-width: 480px;
     padding: 24px;
     border-radius: 6px;
+    position: relative;
     background-color: ${dark ? "var(--darkGray)" : "var(--light)"};
   `
 );

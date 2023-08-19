@@ -1,15 +1,23 @@
 import styled, { css } from "styled-components";
-import { BoardType, ThemeProps } from "../types";
+import { BoardType, TaskType, ThemeProps } from "../types";
 import { generateColors } from "../helpers";
+import { key } from "../hooks/useModals";
 
 type PropsType = {
   board: BoardType;
   dark: boolean;
+  setActiveTask: React.Dispatch<React.SetStateAction<TaskType | null>>;
+  updateModals: (property: key) => void;
 };
 
 const colors = generateColors();
 
-const Board: React.FC<PropsType> = ({ board, dark }) => {
+const Board: React.FC<PropsType> = ({
+  board,
+  dark,
+  setActiveTask,
+  updateModals,
+}) => {
   return (
     <Main>
       {board.columns.map((column, index) => (
@@ -26,7 +34,14 @@ const Board: React.FC<PropsType> = ({ board, dark }) => {
                 .slice()
                 .filter((item) => !item.active).length;
               return (
-                <TaskItem dark={dark} key={task.id}>
+                <TaskItem
+                  dark={dark}
+                  key={task.id}
+                  onClick={() => {
+                    setActiveTask(task);
+                    updateModals("Task");
+                  }}
+                >
                   <TaskTitle dark={dark}>{task.title}</TaskTitle>
                   <SubtasksAmount>
                     {finishedAmount} of {task.subtasks.length}
@@ -89,6 +104,7 @@ const TaskItem = styled.div(
   ({ dark }: ThemeProps) => css`
     width: 100%;
     padding: 24px 16px;
+    cursor: pointer;
     border-radius: 8px;
     background: ${dark ? "var(--darkGray)" : "var(--light)"};
     box-shadow: 0px 4px 6px 0px rgba(54, 78, 126, 0.1);

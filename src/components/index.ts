@@ -5,3 +5,5 @@ export { default as MobileMenu } from "./MobileMenu";
 export { default as NewBoard } from "./NewBoard";
 export { default as Board } from "./Board";
 export { default as NewTask } from "./NewTask";
+export { default as TaskInfo } from "./TaskInfo";
+export { default as EditTask } from "./EditTask";

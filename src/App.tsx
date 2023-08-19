@@ -82,6 +82,7 @@ function App() {
             task={activeTask}
             board={activeBoard}
             subtaskChangeStatus={subtaskChangeStatus}
+            updateModals={updateModals}
           />
         </Modal>
       ) : null}

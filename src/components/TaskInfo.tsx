@@ -3,6 +3,8 @@ import { BoardType, SubtaskType, TaskType, ThemeProps } from "../types";
 import { ColumnSelect, Main, SelectText } from "./styled-components";
 import { Check, Options } from "../svg";
 import { changeSubtaskStatus } from "../services/subtaskService";
+import { useState } from "react";
+import { key } from "../hooks/useModals";
 
 type PropsType = {
   dark: boolean;
@@ -14,6 +16,7 @@ type PropsType = {
     taskId: string,
     subtask: SubtaskType
   ) => void;
+  updateModals: (property: key) => void;
 };
 
 const TaskInfo: React.FC<PropsType> = ({
@@ -21,7 +24,10 @@ const TaskInfo: React.FC<PropsType> = ({
   task,
   board,
   subtaskChangeStatus,
+  updateModals,
 }) => {
+  const [showPanel, setShowPanel] = useState<boolean>(false);
+
   const finishedAmount = task.subtasks
     .slice()
     .filter((item) => !item.active).length;
@@ -49,9 +55,29 @@ const TaskInfo: React.FC<PropsType> = ({
   };
   return (
     <Main dark={dark}>
+      {showPanel ? (
+        <Panel dark={dark}>
+          <EditText
+            onClick={() => {
+              updateModals("Task");
+              updateModals("EditTask");
+            }}
+          >
+            Edit Task
+          </EditText>
+          <DeleteText
+            onClick={() => {
+              updateModals("Task");
+              updateModals("DeleteTask");
+            }}
+          >
+            Delete Task
+          </DeleteText>
+        </Panel>
+      ) : null}
       <Header>
         <TaskTitle dark={dark}>{task.title}</TaskTitle>
-        <Options />
+        <Options onClick={() => setShowPanel(!showPanel)} />
       </Header>
       <Description>{task.description}</Description>
       <ActiveAmount dark={dark}>
@@ -184,3 +210,34 @@ export const Status = styled.h3(
     margin-top: 24px;
   `
 );
+
+const Panel = styled.div(
+  ({ dark }: ThemeProps) => css`
+    width: 192px;
+    height: 94px;
+    padding: 16px;
+    border-radius: 8px;
+    background: ${dark ? "var(--darkBg)" : "var(--light)"};
+    box-shadow: 0px 10px 20px 0px rgba(54, 78, 126, 0.25);
+    position: absolute;
+    top: 68px;
+    right: 15px;
+  `
+);
+
+const EditText = styled.h3`
+  color: var(--grey);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 23px;
+`;
+
+const DeleteText = styled.h3`
+  color: var(--error);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 23px;
+  margin-top: 16px;
+`;

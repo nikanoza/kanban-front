@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import {
   Board,
+  EditTask,
   Empty,
   Header,
   Modal,
@@ -84,6 +85,11 @@ function App() {
             subtaskChangeStatus={subtaskChangeStatus}
             openEditTask={openEditTask}
           />
+        </Modal>
+      ) : null}
+      {modalsInfo.EditTask && activeBoard && activeTask ? (
+        <Modal onClick={() => updateModals("EditTask")}>
+          <EditTask dark={dark} task={activeTask} board={activeBoard} />
         </Modal>
       ) : null}
     </Main>

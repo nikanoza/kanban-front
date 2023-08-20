@@ -33,7 +33,7 @@ const FormController: React.FC<PropsType> = ({
   const onSubmit: SubmitHandler<{
     value: string;
   }> = async (data) => {
-    console.log(data);
+    updateFunc(data);
   };
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -60,7 +60,7 @@ const FormController: React.FC<PropsType> = ({
         >
           <Check color="#635FC7" />
         </CloseButton>
-        <CloseButton type="button" onClick={() => {}}>
+        <CloseButton type="button" onClick={deleteFunc}>
           <Close />
         </CloseButton>
       </Wrapper>

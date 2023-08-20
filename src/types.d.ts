@@ -46,3 +46,8 @@ export interface UpdateSubtask {
   title: string;
   active: boolean;
 }
+
+export interface UpdateTask {
+  title: string;
+  description: string;
+}

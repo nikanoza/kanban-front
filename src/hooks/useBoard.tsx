@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { BoardType, SubtaskType, TaskType, UpdateTask } from "../types";
 import { updateTask } from "../services/taskService";
-import { changeSubtaskStatus } from "../services/subtaskService";
+import { changeSubtaskStatus, deleteSubTask } from "../services/subtaskService";
 
 const useBoard = () => {
   const [boards, setBoards] = useState<BoardType[]>([]);
@@ -113,6 +113,39 @@ const useBoard = () => {
       setBoards(clone);
     }
   };
+
+  const deleteSubtask = async (
+    boardId: string,
+    columnId: string,
+    taskId: string,
+    subtaskId: string
+  ) => {
+    const clone = [...boards];
+    const boardIndex = clone.findIndex((item) => item.id === boardId);
+    const columnIndex = clone[boardIndex].columns.findIndex(
+      (item) => item.id === columnId
+    );
+    const taskIndex = clone[boardIndex].columns[columnIndex].tasks.findIndex(
+      (item) => item.id === taskId
+    );
+    const subtaskIndex = clone[boardIndex].columns[columnIndex].tasks[
+      taskIndex
+    ].subtasks.findIndex((item) => item.id === subtaskId);
+
+    clone[boardIndex].columns[columnIndex].tasks[taskIndex].subtasks.splice(
+      subtaskIndex,
+      1
+    );
+
+    try {
+      await deleteSubTask(taskId, subtaskId);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setBoards(clone);
+    }
+  };
+
   return {
     boards,
     setBoards,
@@ -120,6 +153,7 @@ const useBoard = () => {
     subtaskChangeStatus,
     editTask,
     editSubtaskTitle,
+    deleteSubtask,
   };
 };
 

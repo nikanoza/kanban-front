@@ -14,9 +14,22 @@ type PropsType = {
     columnId: string,
     taskId: string
   ) => Promise<void>;
+  editSubtaskTitle: (
+    value: string,
+    boardId: string,
+    columnId: string,
+    taskId: string,
+    subtaskId: string
+  ) => Promise<void>;
 };
 
-const EditTask: React.FC<PropsType> = ({ dark, task, board, editTask }) => {
+const EditTask: React.FC<PropsType> = ({
+  dark,
+  task,
+  board,
+  editTask,
+  editSubtaskTitle,
+}) => {
   const column = board.columns.find((elem) =>
     elem.tasks.find((item) => task.id === item.id)
   );
@@ -48,6 +61,22 @@ const EditTask: React.FC<PropsType> = ({ dark, task, board, editTask }) => {
         a little."
         updateFunc={updateDescription}
       />
+      <Label dark={dark}>Subtasks</Label>
+      {task.subtasks.map((item) => {
+        const updateSubtaskTitle = (value: string) => {
+          editSubtaskTitle(value, board.id, column?.id || "", task.id, item.id);
+        };
+
+        return (
+          <FormController
+            key={item.id}
+            dark={dark}
+            value={item.title}
+            placeholder="e.g. Take coffee break"
+            updateFunc={updateSubtaskTitle}
+          />
+        );
+      })}
     </Main>
   );
 };

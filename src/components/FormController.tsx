@@ -8,7 +8,7 @@ type PropsType = {
   dark: boolean;
   value: string;
   placeholder: string;
-  updateFunc: () => void;
+  updateFunc: (value: string) => void;
   deleteFunc: () => void;
 };
 
@@ -33,7 +33,7 @@ const FormController: React.FC<PropsType> = ({
   const onSubmit: SubmitHandler<{
     value: string;
   }> = async (data) => {
-    updateFunc(data);
+    updateFunc(data.value);
   };
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>

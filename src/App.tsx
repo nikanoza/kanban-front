@@ -17,8 +17,15 @@ import { useBoard, useModals, useTheme } from "./hooks";
 function App() {
   const { dark, toDark, toLight } = useTheme();
   const { modalsInfo, updateModals, openEditTask } = useModals();
-  const { boards, setBoards, addTask, subtaskChangeStatus, editTask } =
-    useBoard();
+  const {
+    boards,
+    setBoards,
+    addTask,
+    subtaskChangeStatus,
+    editTask,
+    editSubtaskTitle,
+    deleteSubtask,
+  } = useBoard();
   const [activeBoard, setActiveBoard] = useState<BoardType | null>(null);
   const [activeTask, setActiveTask] = useState<TaskType | null>(null);
 
@@ -95,6 +102,8 @@ function App() {
             task={activeTask}
             board={activeBoard}
             editTask={editTask}
+            editSubtaskTitle={editSubtaskTitle}
+            deleteSubtask={deleteSubtask}
           />
         </Modal>
       ) : null}

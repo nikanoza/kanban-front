@@ -17,7 +17,8 @@ import { useBoard, useModals, useTheme } from "./hooks";
 function App() {
   const { dark, toDark, toLight } = useTheme();
   const { modalsInfo, updateModals, openEditTask } = useModals();
-  const { boards, setBoards, addTask, subtaskChangeStatus } = useBoard();
+  const { boards, setBoards, addTask, subtaskChangeStatus, editTask } =
+    useBoard();
   const [activeBoard, setActiveBoard] = useState<BoardType | null>(null);
   const [activeTask, setActiveTask] = useState<TaskType | null>(null);
 
@@ -89,7 +90,12 @@ function App() {
       ) : null}
       {modalsInfo.EditTask && activeBoard && activeTask ? (
         <Modal onClick={() => updateModals("EditTask")}>
-          <EditTask dark={dark} task={activeTask} board={activeBoard} />
+          <EditTask
+            dark={dark}
+            task={activeTask}
+            board={activeBoard}
+            editTask={editTask}
+          />
         </Modal>
       ) : null}
     </Main>

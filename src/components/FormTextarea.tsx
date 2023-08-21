@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formControllerSchema } from "../schemas";
-import { Check, Close } from "../svg";
+import { Check } from "../svg";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
   CloseButton,
@@ -15,7 +15,6 @@ type PropsType = {
   value: string;
   placeholder: string;
   updateFunc: (value: string) => void;
-  deleteFunc: () => void;
 };
 
 const FormTextarea: React.FC<PropsType> = ({
@@ -23,7 +22,6 @@ const FormTextarea: React.FC<PropsType> = ({
   value,
   placeholder,
   updateFunc,
-  deleteFunc,
 }) => {
   const {
     handleSubmit,
@@ -65,9 +63,6 @@ const FormTextarea: React.FC<PropsType> = ({
           }}
         >
           <Check color="#635FC7" />
-        </CloseButton>
-        <CloseButton type="button" onClick={deleteFunc}>
-          <Close />
         </CloseButton>
       </Wrapper>
       <Error>{errors.value && errors.value.message}</Error>

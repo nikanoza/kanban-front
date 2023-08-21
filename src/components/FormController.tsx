@@ -9,7 +9,7 @@ type PropsType = {
   value: string;
   placeholder: string;
   updateFunc: (value: string) => void;
-  deleteFunc: () => void;
+  deleteFunc?: () => void;
 };
 
 const FormController: React.FC<PropsType> = ({
@@ -60,9 +60,11 @@ const FormController: React.FC<PropsType> = ({
         >
           <Check color="#635FC7" />
         </CloseButton>
-        <CloseButton type="button" onClick={deleteFunc}>
-          <Close />
-        </CloseButton>
+        {deleteFunc ? (
+          <CloseButton type="button" onClick={deleteFunc}>
+            <Close />
+          </CloseButton>
+        ) : null}
       </Wrapper>
       <Error>{errors.value && errors.value.message}</Error>
     </Form>

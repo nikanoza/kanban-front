@@ -21,6 +21,12 @@ type PropsType = {
     taskId: string,
     subtaskId: string
   ) => Promise<void>;
+  deleteSubtask: (
+    boardId: string,
+    columnId: string,
+    taskId: string,
+    subtaskId: string
+  ) => Promise<void>;
 };
 
 const EditTask: React.FC<PropsType> = ({
@@ -29,6 +35,7 @@ const EditTask: React.FC<PropsType> = ({
   board,
   editTask,
   editSubtaskTitle,
+  deleteSubtask,
 }) => {
   const column = board.columns.find((elem) =>
     elem.tasks.find((item) => task.id === item.id)
@@ -67,6 +74,10 @@ const EditTask: React.FC<PropsType> = ({
           editSubtaskTitle(value, board.id, column?.id || "", task.id, item.id);
         };
 
+        const removeSubtask = () => {
+          deleteSubtask(board.id, column?.id || "", task.id, item.id);
+        };
+
         return (
           <FormController
             key={item.id}
@@ -74,6 +85,7 @@ const EditTask: React.FC<PropsType> = ({
             value={item.title}
             placeholder="e.g. Take coffee break"
             updateFunc={updateSubtaskTitle}
+            deleteFunc={removeSubtask}
           />
         );
       })}

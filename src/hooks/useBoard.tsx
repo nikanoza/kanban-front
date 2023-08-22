@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { BoardType, SubtaskType, TaskType, UpdateTask } from "../types";
-import { updateTask } from "../services/taskService";
-import { changeSubtaskStatus, deleteSubTask } from "../services/subtaskService";
+import { taskChangeStatus, updateTask } from "../services/taskService";
+import {
+  addSubtask,
+  changeSubtaskStatus,
+  deleteSubTask,
+} from "../services/subtaskService";
 
 const useBoard = () => {
   const [boards, setBoards] = useState<BoardType[]>([]);
@@ -146,6 +150,90 @@ const useBoard = () => {
     }
   };
 
+  const createSubtask = async (
+    value: string,
+    boardId: string,
+    columnId: string,
+    taskId: string
+  ) => {
+    const clone = [...boards];
+    const boardIndex = clone.findIndex((item) => item.id === boardId);
+    const columnIndex = clone[boardIndex].columns.findIndex(
+      (item) => item.id === columnId
+    );
+    const taskIndex = clone[boardIndex].columns[columnIndex].tasks.findIndex(
+      (item) => item.id === taskId
+    );
+
+    try {
+      const response = await addSubtask(value, taskId);
+
+      const newSubtask: SubtaskType = {
+        title: value,
+        active: true,
+        id: response.data,
+      };
+
+      clone[boardIndex].columns[columnIndex].tasks[taskIndex].subtasks.push(
+        newSubtask
+      );
+
+      setBoards(clone);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateTaskStatus = async (
+    boardId: string,
+    columnId: string,
+    newColumnId: string,
+    taskId: string
+  ) => {
+    const clone = [...boards];
+    const boardIndex = clone.findIndex((item) => item.id === boardId);
+    const columnIndex = clone[boardIndex].columns.findIndex(
+      (item) => item.id === columnId
+    );
+
+    const newColumnIndex = clone[boardIndex].columns.findIndex(
+      (item) => item.id === newColumnId
+    );
+
+    const task = clone[boardIndex].columns[columnIndex].tasks.find(
+      (item) => item.id === taskId
+    );
+    const taskIndex = clone[boardIndex].columns[columnIndex].tasks.findIndex(
+      (item) => item.id === taskId
+    );
+
+    try {
+      await taskChangeStatus(taskId, columnId, newColumnId);
+      clone[boardIndex].columns[columnIndex].tasks.splice(taskIndex, 1);
+      if (task) {
+        clone[boardIndex].columns[newColumnIndex].tasks.push(task);
+      }
+      setBoards(clone);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const removeTask = (boardId: string, columnId: string, taskId: string) => {
+    const clone = [...boards];
+    const boardIndex = clone.findIndex((item) => item.id === boardId);
+    const columnIndex = clone[boardIndex].columns.findIndex(
+      (item) => item.id === columnId
+    );
+    const taskIndex = clone[boardIndex].columns[columnIndex].tasks.findIndex(
+      (item) => item.id === taskId
+    );
+
+    clone[boardIndex].columns[columnIndex].tasks.splice(taskIndex, 1);
+
+    setBoards(clone);
+  };
+
   return {
     boards,
     setBoards,
@@ -154,6 +242,9 @@ const useBoard = () => {
     editTask,
     editSubtaskTitle,
     deleteSubtask,
+    createSubtask,
+    updateTaskStatus,
+    removeTask,
   };
 };
 

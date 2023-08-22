@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import {
   Board,
+  DeleteTask,
   EditTask,
   Empty,
   Header,
@@ -16,7 +17,8 @@ import { useBoard, useModals, useTheme } from "./hooks";
 
 function App() {
   const { dark, toDark, toLight } = useTheme();
-  const { modalsInfo, updateModals, openEditTask } = useModals();
+  const { modalsInfo, updateModals, openEditTask, openDeleteTask } =
+    useModals();
   const {
     boards,
     setBoards,
@@ -25,6 +27,9 @@ function App() {
     editTask,
     editSubtaskTitle,
     deleteSubtask,
+    createSubtask,
+    updateTaskStatus,
+    removeTask,
   } = useBoard();
   const [activeBoard, setActiveBoard] = useState<BoardType | null>(null);
   const [activeTask, setActiveTask] = useState<TaskType | null>(null);
@@ -92,6 +97,7 @@ function App() {
             board={activeBoard}
             subtaskChangeStatus={subtaskChangeStatus}
             openEditTask={openEditTask}
+            openDeleteTask={openDeleteTask}
           />
         </Modal>
       ) : null}
@@ -104,6 +110,19 @@ function App() {
             editTask={editTask}
             editSubtaskTitle={editSubtaskTitle}
             deleteSubtask={deleteSubtask}
+            createSubtask={createSubtask}
+            updateTaskStatus={updateTaskStatus}
+          />
+        </Modal>
+      ) : null}
+      {modalsInfo.DeleteTask && activeBoard && activeTask ? (
+        <Modal onClick={() => updateModals("DeleteTask")}>
+          <DeleteTask
+            dark={dark}
+            task={activeTask}
+            board={activeBoard}
+            updateModals={updateModals}
+            removeTask={removeTask}
           />
         </Modal>
       ) : null}

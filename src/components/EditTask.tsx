@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { BoardType, TaskType } from "../types";
 import FormController from "./FormController";
 import FormTextarea from "./FormTextarea";
-import { Label, Main, Title } from "./styled-components";
+import { AddSubtask, Label, Main, Title } from "./styled-components";
 
 type PropsType = {
   dark: boolean;
@@ -27,6 +28,12 @@ type PropsType = {
     taskId: string,
     subtaskId: string
   ) => Promise<void>;
+  createSubtask: (
+    value: string,
+    boardId: string,
+    columnId: string,
+    taskId: string
+  ) => Promise<void>;
 };
 
 const EditTask: React.FC<PropsType> = ({
@@ -37,6 +44,8 @@ const EditTask: React.FC<PropsType> = ({
   editSubtaskTitle,
   deleteSubtask,
 }) => {
+  const [newSubtask, setNewSubtask] = useState<boolean>(false);
+
   const column = board.columns.find((elem) =>
     elem.tasks.find((item) => task.id === item.id)
   );
@@ -89,6 +98,23 @@ const EditTask: React.FC<PropsType> = ({
           />
         );
       })}
+      {newSubtask ? (
+        <FormController
+          dark={dark}
+          value={""}
+          placeholder="e.g. Take coffee break"
+          updateFunc={() => {}}
+          deleteFunc={() => setNewSubtask(false)}
+        />
+      ) : null}
+      <AddSubtask
+        type="button"
+        dark={dark}
+        style={{ marginBottom: "24px" }}
+        onClick={() => setNewSubtask(true)}
+      >
+        + Add New Subtask
+      </AddSubtask>
     </Main>
   );
 };

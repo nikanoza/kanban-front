@@ -8,3 +8,7 @@ export const changeSubtaskStatus = async (data: UpdateSubtask, id: string) => {
 export const deleteSubTask = async (taskId: string, subtaskId: string) => {
   return axios.delete("/subtasks/" + subtaskId, { data: { taskId } });
 };
+
+export const addSubtask = async (title: string, taskId: string) => {
+  return axios.post("/subtasks", { title, taskId });
+};

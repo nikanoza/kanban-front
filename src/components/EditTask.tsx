@@ -46,6 +46,12 @@ type PropsType = {
     columnId: string,
     taskId: string
   ) => Promise<void>;
+  updateTaskStatus: (
+    boardId: string,
+    columnId: string,
+    newColumnId: string,
+    taskId: string
+  ) => Promise<void>;
 };
 
 const EditTask: React.FC<PropsType> = ({
@@ -56,6 +62,7 @@ const EditTask: React.FC<PropsType> = ({
   editSubtaskTitle,
   deleteSubtask,
   createSubtask,
+  updateTaskStatus,
 }) => {
   const [newSubtask, setNewSubtask] = useState<boolean>(false);
   const [showColumns, setShowColumns] = useState<boolean>(false);
@@ -78,6 +85,15 @@ const EditTask: React.FC<PropsType> = ({
   const addSubtask = (value: string) => {
     createSubtask(value, board.id, column?.id || "", task.id);
     setNewSubtask(false);
+  };
+
+  const changeTaskStatus = () => {
+    updateTaskStatus(
+      board.id,
+      column?.id || "",
+      activeColumn?.id || "",
+      task.id
+    );
   };
 
   return (
@@ -164,13 +180,13 @@ const EditTask: React.FC<PropsType> = ({
           ) : null}
         </ColumnSelect>
         <CloseButton
-          type="submit"
           style={{
             width: "fit-content",
             height: "fit-content",
             transform: "scale(2)",
             marginTop: "-5px",
           }}
+          onClick={changeTaskStatus}
         >
           <Check color="#635FC7" />
         </CloseButton>

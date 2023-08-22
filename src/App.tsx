@@ -26,6 +26,7 @@ function App() {
     editSubtaskTitle,
     deleteSubtask,
     createSubtask,
+    updateTaskStatus,
   } = useBoard();
   const [activeBoard, setActiveBoard] = useState<BoardType | null>(null);
   const [activeTask, setActiveTask] = useState<TaskType | null>(null);
@@ -106,6 +107,7 @@ function App() {
             editSubtaskTitle={editSubtaskTitle}
             deleteSubtask={deleteSubtask}
             createSubtask={createSubtask}
+            updateTaskStatus={updateTaskStatus}
           />
         </Modal>
       ) : null}

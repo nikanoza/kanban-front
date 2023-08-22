@@ -8,3 +8,14 @@ export const createNewTask = async (data: NewTaskAxios) => {
 export const updateTask = async (data: UpdateTask, id: string) => {
   return axios.put("/tasks/" + id, data);
 };
+
+export const taskChangeStatus = async (
+  taskId: string,
+  oldColumnId: string,
+  newColumnId: string
+) => {
+  return axios.put("/tasks/status/" + taskId, {
+    columnId: oldColumnId,
+    newColumnId,
+  });
+};

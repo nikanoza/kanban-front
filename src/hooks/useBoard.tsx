@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BoardType, SubtaskType, TaskType, UpdateTask } from "../types";
-import { updateTask } from "../services/taskService";
+import { taskChangeStatus, updateTask } from "../services/taskService";
 import {
   addSubtask,
   changeSubtaskStatus,
@@ -184,6 +184,41 @@ const useBoard = () => {
     }
   };
 
+  const updateTaskStatus = async (
+    boardId: string,
+    columnId: string,
+    newColumnId: string,
+    taskId: string
+  ) => {
+    const clone = [...boards];
+    const boardIndex = clone.findIndex((item) => item.id === boardId);
+    const columnIndex = clone[boardIndex].columns.findIndex(
+      (item) => item.id === columnId
+    );
+
+    const newColumnIndex = clone[boardIndex].columns.findIndex(
+      (item) => item.id === newColumnId
+    );
+
+    const task = clone[boardIndex].columns[columnIndex].tasks.find(
+      (item) => item.id === taskId
+    );
+    const taskIndex = clone[boardIndex].columns[columnIndex].tasks.findIndex(
+      (item) => item.id === taskId
+    );
+
+    try {
+      await taskChangeStatus(taskId, columnId, newColumnId);
+      clone[boardIndex].columns[columnIndex].tasks.splice(taskIndex, 1);
+      if (task) {
+        clone[boardIndex].columns[newColumnIndex].tasks.push(task);
+      }
+      setBoards(clone);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     boards,
     setBoards,
@@ -193,6 +228,7 @@ const useBoard = () => {
     editSubtaskTitle,
     deleteSubtask,
     createSubtask,
+    updateTaskStatus,
   };
 };
 

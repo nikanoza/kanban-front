@@ -116,7 +116,7 @@ function App() {
       ) : null}
       {modalsInfo.DeleteTask && activeBoard && activeTask ? (
         <Modal onClick={() => updateModals("DeleteTask")}>
-          <DeleteTask />
+          <DeleteTask dark={dark} task={activeTask} board={activeBoard} />
         </Modal>
       ) : null}
     </Main>

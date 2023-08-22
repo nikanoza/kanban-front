@@ -43,6 +43,7 @@ const EditTask: React.FC<PropsType> = ({
   editTask,
   editSubtaskTitle,
   deleteSubtask,
+  createSubtask,
 }) => {
   const [newSubtask, setNewSubtask] = useState<boolean>(false);
 
@@ -56,6 +57,11 @@ const EditTask: React.FC<PropsType> = ({
 
   const updateDescription = (value: string) => {
     editTask("description", value, board.id, column?.id || "", task.id);
+  };
+
+  const addSubtask = (value: string) => {
+    createSubtask(value, board.id, column?.id || "", task.id);
+    setNewSubtask(false);
   };
 
   return (
@@ -103,7 +109,7 @@ const EditTask: React.FC<PropsType> = ({
           dark={dark}
           value={""}
           placeholder="e.g. Take coffee break"
-          updateFunc={() => {}}
+          updateFunc={addSubtask}
           deleteFunc={() => setNewSubtask(false)}
         />
       ) : null}

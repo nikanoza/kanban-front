@@ -19,3 +19,7 @@ export const taskChangeStatus = async (
     newColumnId,
   });
 };
+
+export const deleteTask = async (taskId: string, columnId: string) => {
+  return axios.delete("/tasks/" + taskId, { data: { columnId } });
+};

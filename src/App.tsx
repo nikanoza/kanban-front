@@ -29,6 +29,7 @@ function App() {
     deleteSubtask,
     createSubtask,
     updateTaskStatus,
+    removeTask,
   } = useBoard();
   const [activeBoard, setActiveBoard] = useState<BoardType | null>(null);
   const [activeTask, setActiveTask] = useState<TaskType | null>(null);
@@ -116,7 +117,13 @@ function App() {
       ) : null}
       {modalsInfo.DeleteTask && activeBoard && activeTask ? (
         <Modal onClick={() => updateModals("DeleteTask")}>
-          <DeleteTask dark={dark} task={activeTask} board={activeBoard} />
+          <DeleteTask
+            dark={dark}
+            task={activeTask}
+            board={activeBoard}
+            updateModals={updateModals}
+            removeTask={removeTask}
+          />
         </Modal>
       ) : null}
     </Main>

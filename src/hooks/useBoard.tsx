@@ -219,6 +219,21 @@ const useBoard = () => {
     }
   };
 
+  const removeTask = (boardId: string, columnId: string, taskId: string) => {
+    const clone = [...boards];
+    const boardIndex = clone.findIndex((item) => item.id === boardId);
+    const columnIndex = clone[boardIndex].columns.findIndex(
+      (item) => item.id === columnId
+    );
+    const taskIndex = clone[boardIndex].columns[columnIndex].tasks.findIndex(
+      (item) => item.id === taskId
+    );
+
+    clone[boardIndex].columns[columnIndex].tasks.splice(taskIndex, 1);
+
+    setBoards(clone);
+  };
+
   return {
     boards,
     setBoards,
@@ -229,6 +244,7 @@ const useBoard = () => {
     deleteSubtask,
     createSubtask,
     updateTaskStatus,
+    removeTask,
   };
 };
 

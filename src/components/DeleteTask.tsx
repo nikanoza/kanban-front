@@ -1,17 +1,38 @@
 import styled, { css } from "styled-components";
 import { BoardType, TaskType, ThemeProps } from "../types";
 import { Main, SubmitButton } from "./styled-components";
+import { ModalsInfoType } from "../hooks/useModals";
+import { deleteTask } from "../services/taskService";
 
 type PropsType = {
   dark: boolean;
   task: TaskType;
   board: BoardType;
+  updateModals: (property: keyof ModalsInfoType) => void;
+  removeTask: (boardId: string, columnId: string, taskId: string) => void;
 };
 
-const DeleteTask: React.FC<PropsType> = ({ dark, task, board }) => {
+const DeleteTask: React.FC<PropsType> = ({
+  dark,
+  task,
+  board,
+  updateModals,
+  removeTask,
+}) => {
   const column = board.columns.find((elem) =>
     elem.tasks.find((item) => task.id === item.id)
   );
+
+  const deleteValue = async () => {
+    try {
+      await deleteTask(task.id, column?.id || "");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      removeTask(board.id, column?.id || "", task.id);
+      updateModals("DeleteTask");
+    }
+  };
   return (
     <Main dark={dark}>
       <DeleteText>Delete this task?</DeleteText>
@@ -19,8 +40,10 @@ const DeleteTask: React.FC<PropsType> = ({ dark, task, board }) => {
         Are you sure you want to delete the ‘{task.title}’ task and its
         subtasks? This action cannot be reversed.
       </Description>
-      <Confirm>Delete</Confirm>
-      <Cancel dark={dark}>Cancel</Cancel>
+      <Confirm onClick={deleteValue}>Delete</Confirm>
+      <Cancel dark={dark} onClick={() => updateModals("DeleteTask")}>
+        Cancel
+      </Cancel>
     </Main>
   );
 };

@@ -1,8 +1,20 @@
 import { useState } from "react";
-import { BoardType, TaskType } from "../types";
+import { BoardType, ColumnType, TaskType } from "../types";
 import FormController from "./FormController";
 import FormTextarea from "./FormTextarea";
-import { AddSubtask, Label, Main, Title } from "./styled-components";
+import {
+  AddSubtask,
+  CloseButton,
+  ColumnSelect,
+  Label,
+  Main,
+  PanelText,
+  SelectPanel,
+  SelectText,
+  Title,
+  Wrapper,
+} from "./styled-components";
+import { Check, DownArrow } from "../svg";
 
 type PropsType = {
   dark: boolean;
@@ -46,9 +58,13 @@ const EditTask: React.FC<PropsType> = ({
   createSubtask,
 }) => {
   const [newSubtask, setNewSubtask] = useState<boolean>(false);
-
+  const [showColumns, setShowColumns] = useState<boolean>(false);
   const column = board.columns.find((elem) =>
     elem.tasks.find((item) => task.id === item.id)
+  );
+
+  const [activeColumn, setActiveColumn] = useState<ColumnType | undefined>(
+    column
   );
 
   const updateTitle = (value: string) => {
@@ -121,6 +137,44 @@ const EditTask: React.FC<PropsType> = ({
       >
         + Add New Subtask
       </AddSubtask>
+      <Label dark={dark} htmlFor="column-select">
+        Status
+      </Label>
+      <Wrapper>
+        <ColumnSelect dark={dark}>
+          <SelectText>{activeColumn?.title}</SelectText>
+          <div style={{ rotate: showColumns ? "180deg" : "0deg" }}>
+            <DownArrow onClick={() => setShowColumns(!showColumns)} />
+          </div>
+          {showColumns ? (
+            <SelectPanel dark={dark}>
+              {board.columns.map((col) => (
+                <PanelText
+                  key={col.id}
+                  onClick={() => {
+                    setShowColumns(false);
+                    setActiveColumn(col);
+                  }}
+                  type="button"
+                >
+                  {col.title}
+                </PanelText>
+              ))}
+            </SelectPanel>
+          ) : null}
+        </ColumnSelect>
+        <CloseButton
+          type="submit"
+          style={{
+            width: "fit-content",
+            height: "fit-content",
+            transform: "scale(2)",
+            marginTop: "-5px",
+          }}
+        >
+          <Check color="#635FC7" />
+        </CloseButton>
+      </Wrapper>
     </Main>
   );
 };

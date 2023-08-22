@@ -16,6 +16,7 @@ type PropsType = {
     subtask: SubtaskType
   ) => void;
   openEditTask: () => void;
+  openDeleteTask: () => void;
 };
 
 const TaskInfo: React.FC<PropsType> = ({
@@ -24,6 +25,7 @@ const TaskInfo: React.FC<PropsType> = ({
   board,
   subtaskChangeStatus,
   openEditTask,
+  openDeleteTask,
 }) => {
   const [showPanel, setShowPanel] = useState<boolean>(false);
 
@@ -56,14 +58,8 @@ const TaskInfo: React.FC<PropsType> = ({
     <Main dark={dark}>
       {showPanel ? (
         <Panel dark={dark}>
-          <EditText
-            onClick={() => {
-              openEditTask();
-            }}
-          >
-            Edit Task
-          </EditText>
-          <DeleteText onClick={() => {}}>Delete Task</DeleteText>
+          <EditText onClick={openEditTask}>Edit Task</EditText>
+          <DeleteText onClick={openDeleteTask}>Delete Task</DeleteText>
         </Panel>
       ) : null}
       <Header>

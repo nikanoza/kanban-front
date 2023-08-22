@@ -37,7 +37,13 @@ const useModals = () => {
     });
   };
 
-  return { modalsInfo, updateModals, openEditTask };
+  const openDeleteTask = () => {
+    setModalsInfo((state) => {
+      return { ...state, Task: false, DeleteTask: true };
+    });
+  };
+
+  return { modalsInfo, updateModals, openEditTask, openDeleteTask };
 };
 
 export default useModals;

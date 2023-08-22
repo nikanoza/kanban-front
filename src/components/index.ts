@@ -7,3 +7,4 @@ export { default as Board } from "./Board";
 export { default as NewTask } from "./NewTask";
 export { default as TaskInfo } from "./TaskInfo";
 export { default as EditTask } from "./EditTask";
+export { default as DeleteTask } from "./DeleteTask";

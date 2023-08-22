@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import {
   Board,
+  DeleteTask,
   EditTask,
   Empty,
   Header,
@@ -16,7 +17,8 @@ import { useBoard, useModals, useTheme } from "./hooks";
 
 function App() {
   const { dark, toDark, toLight } = useTheme();
-  const { modalsInfo, updateModals, openEditTask } = useModals();
+  const { modalsInfo, updateModals, openEditTask, openDeleteTask } =
+    useModals();
   const {
     boards,
     setBoards,
@@ -94,6 +96,7 @@ function App() {
             board={activeBoard}
             subtaskChangeStatus={subtaskChangeStatus}
             openEditTask={openEditTask}
+            openDeleteTask={openDeleteTask}
           />
         </Modal>
       ) : null}
@@ -109,6 +112,11 @@ function App() {
             createSubtask={createSubtask}
             updateTaskStatus={updateTaskStatus}
           />
+        </Modal>
+      ) : null}
+      {modalsInfo.DeleteTask && activeBoard && activeTask ? (
+        <Modal onClick={() => updateModals("DeleteTask")}>
+          <DeleteTask />
         </Modal>
       ) : null}
     </Main>

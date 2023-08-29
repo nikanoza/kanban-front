@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 import {
   Board,
   DeleteTask,
+  EditBoard,
   EditTask,
   Empty,
   Header,
@@ -124,6 +125,11 @@ function App() {
             updateModals={updateModals}
             removeTask={removeTask}
           />
+        </Modal>
+      ) : null}
+      {modalsInfo.EditBoard && activeBoard ? (
+        <Modal onClick={() => updateModals("EditBoard")}>
+          <EditBoard dark={dark} board={activeBoard} />
         </Modal>
       ) : null}
     </Main>

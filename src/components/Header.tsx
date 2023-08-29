@@ -23,10 +23,11 @@ const Header: React.FC<PropsType> = ({
   activeBoard,
   setActiveBoard,
 }) => {
-  const [showMenu, setShoeMenu] = useState<boolean>(false);
+  const [showMenu, setShowMenu] = useState<boolean>(false);
+  const [showPanel, setShowPanel] = useState<boolean>(false);
 
   const closeMenu = () => {
-    setShoeMenu(false);
+    setShowMenu(false);
   };
 
   return (
@@ -35,7 +36,12 @@ const Header: React.FC<PropsType> = ({
       <BoardSelect dark={dark}>
         {activeBoard ? activeBoard.title : "No Boards"}
       </BoardSelect>
-      <DownArrow />
+      <DownArrow
+        onClick={() => {
+          setShowMenu(!showMenu);
+          setShowPanel(false);
+        }}
+      />
       <PlusBox>
         <Plus
           onClick={() => {
@@ -43,7 +49,12 @@ const Header: React.FC<PropsType> = ({
           }}
         />
       </PlusBox>
-      <Options onClick={() => setShoeMenu(true)} />
+      <Options
+        onClick={() => {
+          setShowPanel(!showPanel);
+          setShowMenu(false);
+        }}
+      />
       {showMenu ? (
         <MobileMenu
           dark={dark}
@@ -54,6 +65,20 @@ const Header: React.FC<PropsType> = ({
           updateModals={updateModals}
           setActiveBoard={setActiveBoard}
         />
+      ) : null}
+      {showPanel ? (
+        <Panel dark={dark}>
+          <EditText
+            onClick={() => {
+              updateModals("EditBoard");
+              setShowMenu(false);
+              setShowPanel(false);
+            }}
+          >
+            Edit Board
+          </EditText>
+          <DeleteText>Delete Board</DeleteText>
+        </Panel>
       ) : null}
     </HeaderElem>
   );
@@ -94,4 +119,37 @@ const PlusBox = styled.div`
   height: 32px;
   margin-left: auto;
   margin-right: 16px;
+`;
+
+const Panel = styled.div(
+  ({ dark }: ThemeProps) => css`
+    width: 192px;
+    height: 94px;
+    border-radius: 8px;
+    background: ${!dark ? "var(--light)" : "var(--darkBg)"};
+    box-shadow: 0px 10px 20px 0px rgba(54, 78, 126, 0.25);
+    padding: 16px;
+    position: absolute;
+    top: 68px;
+    right: 15px;
+  `
+);
+
+const EditText = styled.h3`
+  color: var(--grey);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 23px;
+  width: fit-content;
+`;
+
+const DeleteText = styled.h3`
+  color: var(--error);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 23px;
+  margin-top: 16px;
+  width: fit-content;
 `;

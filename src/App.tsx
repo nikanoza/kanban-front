@@ -34,6 +34,7 @@ function App() {
     updateColumnTitle,
     updateBoardTitle,
     removeColumn,
+    createColumn,
   } = useBoard();
   const [activeBoard, setActiveBoard] = useState<BoardType | null>(null);
   const [activeTask, setActiveTask] = useState<TaskType | null>(null);
@@ -138,6 +139,7 @@ function App() {
             updateBoardTitle={updateBoardTitle}
             updateColumnTitle={updateColumnTitle}
             removeColumn={removeColumn}
+            createColumn={createColumn}
           />
         </Modal>
       ) : null}

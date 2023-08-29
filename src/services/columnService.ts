@@ -11,3 +11,7 @@ export const deleteColumn = async (boardId: string, columnId: string) => {
     data: { boardId },
   });
 };
+
+export const addColumn = async (title: string, boardId: string) => {
+  return axios.post("/columns", { title, boardId });
+};

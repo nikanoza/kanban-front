@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { BoardType } from "../types";
+import { BoardType, ColumnType } from "../types";
 import FormController from "./FormController";
 import { AddSubtask, Label, Main, Title } from "./styled-components";
+import { addColumn } from "../services/columnService";
 
 type PropsType = {
   dark: boolean;
@@ -13,6 +14,7 @@ type PropsType = {
     columnId: string
   ) => Promise<void>;
   removeColumn: (boardId: string, columnId: string) => Promise<void>;
+  createColumn: (data: ColumnType, boardId: string) => Promise<void>;
 };
 
 const EditBoard: React.FC<PropsType> = ({
@@ -21,11 +23,28 @@ const EditBoard: React.FC<PropsType> = ({
   updateBoardTitle,
   updateColumnTitle,
   removeColumn,
+  createColumn,
 }) => {
   const [newColumn, setNewColumn] = useState<boolean>(false);
 
   const updateBoard = (value: string) => {
     updateBoardTitle(value, board.id);
+  };
+
+  const addNewColumn = async (value: string) => {
+    try {
+      const response = await addColumn(value, board.id);
+      const newColumn: ColumnType = {
+        title: value,
+        tasks: [],
+        id: response.data,
+      };
+      createColumn(newColumn, board.id);
+      setNewColumn(false);
+      alert("New Column created successfully");
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <Main dark={dark}>
@@ -62,7 +81,7 @@ const EditBoard: React.FC<PropsType> = ({
           dark={dark}
           value={""}
           placeholder="e.g. Take coffee break"
-          updateFunc={() => {}}
+          updateFunc={addNewColumn}
           deleteFunc={() => setNewColumn(false)}
         />
       ) : null}

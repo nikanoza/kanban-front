@@ -52,6 +52,11 @@ const Board: React.FC<PropsType> = ({
           </TaskItems>
         </Col>
       ))}
+      <NewColumn dark={dark}>
+        <NewColumnText onClick={() => updateModals("EditBoard")}>
+          + New Column
+        </NewColumnText>
+      </NewColumn>
     </Main>
   );
 };
@@ -125,6 +130,29 @@ const SubtasksAmount = styled.h4`
   margin-top: 8px;
   color: var(--grey);
   font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+`;
+
+const NewColumn = styled.div(
+  ({ dark }: ThemeProps) => css`
+    width: 100%;
+    min-height: 500px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: ${dark
+      ? "linear-gradient(180deg, rgba(43, 44, 55, 0.25) 0%, rgba(43, 44, 55, 0.13) 100%)"
+      : "linear-gradient(180deg,#e9effa 0%,rgba(233, 239, 250, 0.5) 100%)"};
+  `
+);
+
+const NewColumnText = styled.h2`
+  color: var(--grey);
+  text-align: center;
+  font-size: 24px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;

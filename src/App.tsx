@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import {
   Board,
+  DeleteBoard,
   DeleteTask,
   EditBoard,
   EditTask,
@@ -140,6 +141,15 @@ function App() {
             updateColumnTitle={updateColumnTitle}
             removeColumn={removeColumn}
             createColumn={createColumn}
+          />
+        </Modal>
+      ) : null}
+      {modalsInfo.DeleteBoard && activeBoard ? (
+        <Modal onClick={() => updateModals("DeleteBoard")}>
+          <DeleteBoard
+            dark={dark}
+            board={activeBoard}
+            updateModals={updateModals}
           />
         </Modal>
       ) : null}

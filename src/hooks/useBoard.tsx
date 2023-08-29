@@ -13,11 +13,7 @@ import {
   deleteSubTask,
 } from "../services/subtaskService";
 import { updateBoard } from "../services/boardServices";
-import {
-  addColumn,
-  deleteColumn,
-  updateColumn,
-} from "../services/columnService";
+import { deleteColumn, updateColumn } from "../services/columnService";
 
 const useBoard = () => {
   const [boards, setBoards] = useState<BoardType[]>([]);

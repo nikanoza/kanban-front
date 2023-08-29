@@ -77,7 +77,15 @@ const Header: React.FC<PropsType> = ({
           >
             Edit Board
           </EditText>
-          <DeleteText>Delete Board</DeleteText>
+          <DeleteText
+            onClick={() => {
+              updateModals("DeleteBoard");
+              setShowMenu(false);
+              setShowPanel(false);
+            }}
+          >
+            Delete Board
+          </DeleteText>
         </Panel>
       ) : null}
     </HeaderElem>

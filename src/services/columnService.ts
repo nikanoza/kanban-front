@@ -5,3 +5,9 @@ export const updateColumn = async (title: string, id: string) => {
     title,
   });
 };
+
+export const deleteColumn = async (boardId: string, columnId: string) => {
+  return axios.delete("/columns/" + columnId, {
+    data: { boardId },
+  });
+};

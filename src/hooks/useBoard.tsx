@@ -13,7 +13,7 @@ import {
   deleteSubTask,
 } from "../services/subtaskService";
 import { updateBoard } from "../services/boardServices";
-import { updateColumn } from "../services/columnService";
+import { deleteColumn, updateColumn } from "../services/columnService";
 
 const useBoard = () => {
   const [boards, setBoards] = useState<BoardType[]>([]);
@@ -335,6 +335,23 @@ const useBoard = () => {
     }
   };
 
+  const removeColumn = async (boardId: string, columnId: string) => {
+    const clone = [...boards];
+    const [boardIndex, columnIndex] = getItemAndItemIndex(boardId, columnId);
+    if (typeof columnIndex !== "number") {
+      return;
+    }
+
+    try {
+      await deleteColumn(boardId, columnId);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      clone[boardIndex].columns.splice(columnIndex, 1);
+      setBoards(clone);
+    }
+  };
+
   return {
     boards,
     setBoards,
@@ -348,6 +365,7 @@ const useBoard = () => {
     removeTask,
     updateBoardTitle,
     updateColumnTitle,
+    removeColumn,
   };
 };
 

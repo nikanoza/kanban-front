@@ -12,6 +12,7 @@ type PropsType = {
     boardId: string,
     columnId: string
   ) => Promise<void>;
+  removeColumn: (boardId: string, columnId: string) => Promise<void>;
 };
 
 const EditBoard: React.FC<PropsType> = ({
@@ -19,6 +20,7 @@ const EditBoard: React.FC<PropsType> = ({
   board,
   updateBoardTitle,
   updateColumnTitle,
+  removeColumn,
 }) => {
   const [newColumn, setNewColumn] = useState<boolean>(false);
 
@@ -40,6 +42,10 @@ const EditBoard: React.FC<PropsType> = ({
         const updateColumn = (value: string) => {
           updateColumnTitle(value, board.id, item.id);
         };
+
+        const deleteColumn = () => {
+          removeColumn(board.id, item.id);
+        };
         return (
           <FormController
             key={item.id}
@@ -47,7 +53,7 @@ const EditBoard: React.FC<PropsType> = ({
             value={item.title}
             placeholder="e.g. Take coffee break"
             updateFunc={updateColumn}
-            deleteFunc={() => {}}
+            deleteFunc={deleteColumn}
           />
         );
       })}

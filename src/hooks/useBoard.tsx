@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { BoardType, SubtaskType, TaskType, UpdateTask } from "../types";
+import {
+  BoardType,
+  ColumnType,
+  SubtaskType,
+  TaskType,
+  UpdateTask,
+} from "../types";
 import { taskChangeStatus, updateTask } from "../services/taskService";
 import {
   addSubtask,
@@ -10,16 +16,66 @@ import {
 const useBoard = () => {
   const [boards, setBoards] = useState<BoardType[]>([]);
 
+  const getItemAndItemIndex = (
+    boardId: string,
+    columnId?: string,
+    taskId?: string,
+    subtask?: SubtaskType
+  ):
+    | [number, BoardType]
+    | [number, number, ColumnType]
+    | [number, number, number, TaskType]
+    | [number, number, number, number, SubtaskType] => {
+    const boardIndex = boards.findIndex((elem) => elem.id === boardId);
+
+    if (!columnId) {
+      return [boardIndex, boards[boardIndex]];
+    }
+
+    const columnIndex = boards[boardIndex].columns.findIndex(
+      (item) => item.id === columnId
+    );
+
+    if (!taskId) {
+      return [boardIndex, columnIndex, boards[boardIndex].columns[columnIndex]];
+    }
+
+    const taskIndex = boards[boardIndex].columns[columnIndex].tasks.findIndex(
+      (item) => item.id === taskId
+    );
+
+    if (!subtask) {
+      return [
+        boardIndex,
+        columnIndex,
+        taskIndex,
+        boards[boardIndex].columns[columnIndex].tasks[taskIndex],
+      ];
+    }
+    const subtaskIndex = boards[boardIndex].columns[columnIndex].tasks[
+      taskIndex
+    ].subtasks.findIndex((item) => item.id === subtask.id);
+
+    return [
+      boardIndex,
+      columnIndex,
+      taskIndex,
+      subtaskIndex,
+      boards[boardIndex].columns[columnIndex].tasks[taskIndex].subtasks[
+        subtaskIndex
+      ],
+    ];
+  };
+
   const addTask = (data: TaskType, boardId: string, columnId: string) => {
     const clone = [...boards];
 
-    const boardIndex = clone.findIndex((elem) => elem.id === boardId);
-    const columnIndex = clone[boardIndex].columns.findIndex(
-      (elem) => elem.id === columnId
-    );
+    const [boardIndex, columnIndex] = getItemAndItemIndex(boardId, columnId);
 
+    if (typeof columnIndex !== "number") {
+      return;
+    }
     clone[boardIndex].columns[columnIndex].tasks.push(data);
-
     setBoards(clone);
   };
 
@@ -30,16 +86,15 @@ const useBoard = () => {
     subtask: SubtaskType
   ) => {
     const clone = [...boards];
-    const boardIndex = clone.findIndex((item) => item.id === boardId);
-    const columnIndex = clone[boardIndex].columns.findIndex(
-      (item) => item.id === columnId
-    );
-    const taskIndex = clone[boardIndex].columns[columnIndex].tasks.findIndex(
-      (item) => item.id === taskId
-    );
-    const subtaskIndex = clone[boardIndex].columns[columnIndex].tasks[
-      taskIndex
-    ].subtasks.findIndex((item) => item.id === subtask.id);
+    const [boardIndex, columnIndex, taskIndex, subtaskIndex] =
+      getItemAndItemIndex(boardId, columnId, taskId, subtask);
+    if (
+      typeof columnIndex !== "number" ||
+      typeof taskIndex !== "number" ||
+      typeof subtaskIndex !== "number"
+    ) {
+      return;
+    }
 
     clone[boardIndex].columns[columnIndex].tasks[taskIndex].subtasks[
       subtaskIndex
@@ -56,14 +111,19 @@ const useBoard = () => {
     taskId: string
   ) => {
     const clone = [...boards];
-    const boardIndex = clone.findIndex((item) => item.id === boardId);
-    const columnIndex = clone[boardIndex].columns.findIndex(
-      (item) => item.id === columnId
+    const [boardIndex, columnIndex, taskIndex, task] = getItemAndItemIndex(
+      boardId,
+      columnId,
+      taskId
     );
-    const taskIndex = clone[boardIndex].columns[columnIndex].tasks.findIndex(
-      (item) => item.id === taskId
-    );
-    const task = clone[boardIndex].columns[columnIndex].tasks[taskIndex];
+
+    if (
+      typeof columnIndex !== "number" ||
+      typeof taskIndex !== "number" ||
+      typeof task !== "object"
+    ) {
+      return;
+    }
     clone[boardIndex].columns[columnIndex].tasks[taskIndex][property] = value;
     try {
       const newTask: UpdateTask = {
@@ -87,13 +147,14 @@ const useBoard = () => {
     subtaskId: string
   ) => {
     const clone = [...boards];
-    const boardIndex = clone.findIndex((item) => item.id === boardId);
-    const columnIndex = clone[boardIndex].columns.findIndex(
-      (item) => item.id === columnId
+    const [boardIndex, columnIndex, taskIndex] = getItemAndItemIndex(
+      boardId,
+      columnId,
+      taskId
     );
-    const taskIndex = clone[boardIndex].columns[columnIndex].tasks.findIndex(
-      (item) => item.id === taskId
-    );
+    if (typeof columnIndex !== "number" || typeof taskIndex !== "number") {
+      return;
+    }
     const subtaskIndex = clone[boardIndex].columns[columnIndex].tasks[
       taskIndex
     ].subtasks.findIndex((item) => item.id === subtaskId);
@@ -125,13 +186,14 @@ const useBoard = () => {
     subtaskId: string
   ) => {
     const clone = [...boards];
-    const boardIndex = clone.findIndex((item) => item.id === boardId);
-    const columnIndex = clone[boardIndex].columns.findIndex(
-      (item) => item.id === columnId
+    const [boardIndex, columnIndex, taskIndex] = getItemAndItemIndex(
+      boardId,
+      columnId,
+      taskId
     );
-    const taskIndex = clone[boardIndex].columns[columnIndex].tasks.findIndex(
-      (item) => item.id === taskId
-    );
+    if (typeof columnIndex !== "number" || typeof taskIndex !== "number") {
+      return;
+    }
     const subtaskIndex = clone[boardIndex].columns[columnIndex].tasks[
       taskIndex
     ].subtasks.findIndex((item) => item.id === subtaskId);
@@ -157,14 +219,14 @@ const useBoard = () => {
     taskId: string
   ) => {
     const clone = [...boards];
-    const boardIndex = clone.findIndex((item) => item.id === boardId);
-    const columnIndex = clone[boardIndex].columns.findIndex(
-      (item) => item.id === columnId
+    const [boardIndex, columnIndex, taskIndex] = getItemAndItemIndex(
+      boardId,
+      columnId,
+      taskId
     );
-    const taskIndex = clone[boardIndex].columns[columnIndex].tasks.findIndex(
-      (item) => item.id === taskId
-    );
-
+    if (typeof columnIndex !== "number" || typeof taskIndex !== "number") {
+      return;
+    }
     try {
       const response = await addSubtask(value, taskId);
 
@@ -191,20 +253,21 @@ const useBoard = () => {
     taskId: string
   ) => {
     const clone = [...boards];
-    const boardIndex = clone.findIndex((item) => item.id === boardId);
-    const columnIndex = clone[boardIndex].columns.findIndex(
-      (item) => item.id === columnId
+    const [boardIndex, columnIndex, taskIndex, task] = getItemAndItemIndex(
+      boardId,
+      columnId,
+      taskId
     );
+    if (
+      typeof columnIndex !== "number" ||
+      typeof taskIndex !== "number" ||
+      typeof task !== "object"
+    ) {
+      return;
+    }
 
     const newColumnIndex = clone[boardIndex].columns.findIndex(
       (item) => item.id === newColumnId
-    );
-
-    const task = clone[boardIndex].columns[columnIndex].tasks.find(
-      (item) => item.id === taskId
-    );
-    const taskIndex = clone[boardIndex].columns[columnIndex].tasks.findIndex(
-      (item) => item.id === taskId
     );
 
     try {
@@ -221,14 +284,14 @@ const useBoard = () => {
 
   const removeTask = (boardId: string, columnId: string, taskId: string) => {
     const clone = [...boards];
-    const boardIndex = clone.findIndex((item) => item.id === boardId);
-    const columnIndex = clone[boardIndex].columns.findIndex(
-      (item) => item.id === columnId
+    const [boardIndex, columnIndex, taskIndex] = getItemAndItemIndex(
+      boardId,
+      columnId,
+      taskId
     );
-    const taskIndex = clone[boardIndex].columns[columnIndex].tasks.findIndex(
-      (item) => item.id === taskId
-    );
-
+    if (typeof columnIndex !== "number" || typeof taskIndex !== "number") {
+      return;
+    }
     clone[boardIndex].columns[columnIndex].tasks.splice(taskIndex, 1);
 
     setBoards(clone);

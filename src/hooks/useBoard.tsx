@@ -12,6 +12,7 @@ import {
   changeSubtaskStatus,
   deleteSubTask,
 } from "../services/subtaskService";
+import { updateBoard } from "../services/boardServices";
 
 const useBoard = () => {
   const [boards, setBoards] = useState<BoardType[]>([]);
@@ -297,6 +298,20 @@ const useBoard = () => {
     setBoards(clone);
   };
 
+  const updateBoardTitle = async (value: string, boardId: string) => {
+    const [boardIndex] = getItemAndItemIndex(boardId);
+    const clone = [...boards];
+    try {
+      await updateBoard(value, boardId);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      clone[boardIndex].title = value;
+      setBoards(clone);
+      alert("Board Title Updated Successfully");
+    }
+  };
+
   return {
     boards,
     setBoards,
@@ -308,6 +323,7 @@ const useBoard = () => {
     createSubtask,
     updateTaskStatus,
     removeTask,
+    updateBoardTitle,
   };
 };
 

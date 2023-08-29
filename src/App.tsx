@@ -31,6 +31,7 @@ function App() {
     createSubtask,
     updateTaskStatus,
     removeTask,
+    updateBoardTitle,
   } = useBoard();
   const [activeBoard, setActiveBoard] = useState<BoardType | null>(null);
   const [activeTask, setActiveTask] = useState<TaskType | null>(null);
@@ -129,7 +130,11 @@ function App() {
       ) : null}
       {modalsInfo.EditBoard && activeBoard ? (
         <Modal onClick={() => updateModals("EditBoard")}>
-          <EditBoard dark={dark} board={activeBoard} />
+          <EditBoard
+            dark={dark}
+            board={activeBoard}
+            updateBoardTitle={updateBoardTitle}
+          />
         </Modal>
       ) : null}
     </Main>

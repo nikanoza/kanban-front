@@ -6,10 +6,15 @@ import { AddSubtask, Label, Main, Title } from "./styled-components";
 type PropsType = {
   dark: boolean;
   board: BoardType;
+  updateBoardTitle: (value: string, boardId: string) => Promise<void>;
 };
 
-const EditBoard: React.FC<PropsType> = ({ dark, board }) => {
+const EditBoard: React.FC<PropsType> = ({ dark, board, updateBoardTitle }) => {
   const [newColumn, setNewColumn] = useState<boolean>(false);
+
+  const updateBoard = (value: string) => {
+    updateBoardTitle(value, board.id);
+  };
   return (
     <Main dark={dark}>
       <Title dark={dark}>Edit Board</Title>
@@ -18,7 +23,7 @@ const EditBoard: React.FC<PropsType> = ({ dark, board }) => {
         dark={dark}
         value={board.title}
         placeholder="e.g. Take coffee break"
-        updateFunc={() => {}}
+        updateFunc={updateBoard}
       />
       <Label dark={dark}>Board Columns</Label>
       {board.columns.map((item) => {

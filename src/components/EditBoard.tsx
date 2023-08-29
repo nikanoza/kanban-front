@@ -7,9 +7,19 @@ type PropsType = {
   dark: boolean;
   board: BoardType;
   updateBoardTitle: (value: string, boardId: string) => Promise<void>;
+  updateColumnTitle: (
+    value: string,
+    boardId: string,
+    columnId: string
+  ) => Promise<void>;
 };
 
-const EditBoard: React.FC<PropsType> = ({ dark, board, updateBoardTitle }) => {
+const EditBoard: React.FC<PropsType> = ({
+  dark,
+  board,
+  updateBoardTitle,
+  updateColumnTitle,
+}) => {
   const [newColumn, setNewColumn] = useState<boolean>(false);
 
   const updateBoard = (value: string) => {
@@ -27,13 +37,16 @@ const EditBoard: React.FC<PropsType> = ({ dark, board, updateBoardTitle }) => {
       />
       <Label dark={dark}>Board Columns</Label>
       {board.columns.map((item) => {
+        const updateColumn = (value: string) => {
+          updateColumnTitle(value, board.id, item.id);
+        };
         return (
           <FormController
             key={item.id}
             dark={dark}
             value={item.title}
             placeholder="e.g. Take coffee break"
-            updateFunc={() => {}}
+            updateFunc={updateColumn}
             deleteFunc={() => {}}
           />
         );

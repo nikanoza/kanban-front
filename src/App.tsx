@@ -31,6 +31,7 @@ function App() {
     createSubtask,
     updateTaskStatus,
     removeTask,
+    updateColumnTitle,
     updateBoardTitle,
   } = useBoard();
   const [activeBoard, setActiveBoard] = useState<BoardType | null>(null);
@@ -134,6 +135,7 @@ function App() {
             dark={dark}
             board={activeBoard}
             updateBoardTitle={updateBoardTitle}
+            updateColumnTitle={updateColumnTitle}
           />
         </Modal>
       ) : null}

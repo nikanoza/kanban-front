@@ -13,6 +13,7 @@ import {
   deleteSubTask,
 } from "../services/subtaskService";
 import { updateBoard } from "../services/boardServices";
+import { updateColumn } from "../services/columnService";
 
 const useBoard = () => {
   const [boards, setBoards] = useState<BoardType[]>([]);
@@ -312,6 +313,28 @@ const useBoard = () => {
     }
   };
 
+  const updateColumnTitle = async (
+    value: string,
+    boardId: string,
+    columnId: string
+  ) => {
+    const clone = [...boards];
+    const [boardIndex, columnIndex] = getItemAndItemIndex(boardId, columnId);
+    if (typeof columnIndex !== "number") {
+      return;
+    }
+
+    try {
+      await updateColumn(value, columnId);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      clone[boardIndex].columns[columnIndex].title = value;
+      setBoards(clone);
+      alert("Column Title Updated Successfully");
+    }
+  };
+
   return {
     boards,
     setBoards,
@@ -324,6 +347,7 @@ const useBoard = () => {
     updateTaskStatus,
     removeTask,
     updateBoardTitle,
+    updateColumnTitle,
   };
 };
 

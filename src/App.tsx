@@ -1,7 +1,9 @@
 import styled, { css } from "styled-components";
 import {
   Board,
+  DeleteBoard,
   DeleteTask,
+  EditBoard,
   EditTask,
   Empty,
   Header,
@@ -30,6 +32,10 @@ function App() {
     createSubtask,
     updateTaskStatus,
     removeTask,
+    updateColumnTitle,
+    updateBoardTitle,
+    removeColumn,
+    createColumn,
   } = useBoard();
   const [activeBoard, setActiveBoard] = useState<BoardType | null>(null);
   const [activeTask, setActiveTask] = useState<TaskType | null>(null);
@@ -123,6 +129,27 @@ function App() {
             board={activeBoard}
             updateModals={updateModals}
             removeTask={removeTask}
+          />
+        </Modal>
+      ) : null}
+      {modalsInfo.EditBoard && activeBoard ? (
+        <Modal onClick={() => updateModals("EditBoard")}>
+          <EditBoard
+            dark={dark}
+            board={activeBoard}
+            updateBoardTitle={updateBoardTitle}
+            updateColumnTitle={updateColumnTitle}
+            removeColumn={removeColumn}
+            createColumn={createColumn}
+          />
+        </Modal>
+      ) : null}
+      {modalsInfo.DeleteBoard && activeBoard ? (
+        <Modal onClick={() => updateModals("DeleteBoard")}>
+          <DeleteBoard
+            dark={dark}
+            board={activeBoard}
+            updateModals={updateModals}
           />
         </Modal>
       ) : null}

@@ -218,6 +218,7 @@ const EditText = styled.h3`
   font-style: normal;
   font-weight: 500;
   line-height: 23px;
+  width: fit-content;
 `;
 
 const DeleteText = styled.h3`
@@ -227,4 +228,5 @@ const DeleteText = styled.h3`
   font-weight: 500;
   line-height: 23px;
   margin-top: 16px;
+  width: fit-content;
 `;

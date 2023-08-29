@@ -8,3 +8,9 @@ export const getAllBoards = async () => {
 export const createNewBoard = async (data: NewBoardType) => {
   return await axios.post("/boards", data);
 };
+
+export const updateBoard = async (title: string, id: string) => {
+  return await axios.put("/boards/" + id, {
+    title,
+  });
+};

@@ -1,3 +1,5 @@
+// @ts-ignore.
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   useForm,

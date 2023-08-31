@@ -1,3 +1,5 @@
+// @ts-ignore.
+
 import styled, { css } from "styled-components";
 import { BoardType, NewBoardType, ThemeProps } from "../types";
 import { zodResolver } from "@hookform/resolvers/zod";

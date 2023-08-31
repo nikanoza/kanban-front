@@ -66,8 +66,8 @@ const NewTask: React.FC<PropsType> = ({
   });
 
   const { fields, append, remove } = useFieldArray({
-    name: "subtasks",
     control: control,
+    name: "subtasks",
   });
 
   const onSubmit: SubmitHandler<NewTaskType> = async (data) => {

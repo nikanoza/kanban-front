@@ -14,3 +14,7 @@ export const updateBoard = async (title: string, id: string) => {
     title,
   });
 };
+
+export const deleteBoard = async (id: string) => {
+  return await axios.delete("/boards/" + id);
+};

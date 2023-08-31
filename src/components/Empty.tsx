@@ -53,4 +53,7 @@ const NewBoardButton = styled.button`
   font-weight: 700;
   line-height: normal;
   border: none;
+  &:hover {
+    background: var(--violetHover);
+  }
 `;

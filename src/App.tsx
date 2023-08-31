@@ -7,6 +7,7 @@ import {
   EditTask,
   Empty,
   Header,
+  LargeMenu,
   Modal,
   NewBoard,
   NewTask,
@@ -16,6 +17,7 @@ import { useEffect, useState } from "react";
 import { BoardType, TaskType, ThemeProps } from "./types";
 import { getAllBoards } from "./services/boardServices";
 import { useBoard, useModals, useTheme } from "./hooks";
+import { Show } from "./svg";
 
 function App() {
   const { dark, toDark, toLight } = useTheme();
@@ -36,9 +38,11 @@ function App() {
     updateBoardTitle,
     removeColumn,
     createColumn,
+    removeBoard,
   } = useBoard();
   const [activeBoard, setActiveBoard] = useState<BoardType | null>(null);
   const [activeTask, setActiveTask] = useState<TaskType | null>(null);
+  const [activeMenu, setActiveMenu] = useState<boolean>(true);
 
   useEffect(() => {
     const getBoardsData = async () => {
@@ -55,7 +59,12 @@ function App() {
   }, [setBoards]);
 
   return (
-    <Main>
+    <Main dark={dark}>
+      {activeMenu ? null : (
+        <ShowTabletMenu onClick={() => setActiveMenu(true)}>
+          <Show />
+        </ShowTabletMenu>
+      )}
       <Header
         dark={dark}
         toDark={toDark}
@@ -64,25 +73,45 @@ function App() {
         updateModals={updateModals}
         activeBoard={activeBoard}
         setActiveBoard={setActiveBoard}
+        activeMenu={activeMenu}
       />
-      <Content
-        dark={dark}
-        style={{ alignItems: boards.length > 0 ? "flex-start" : "center" }}
-      >
-        {boards.length > 0 && activeBoard ? (
-          <Board
-            board={activeBoard}
+      <Wrapper>
+        {activeMenu ? (
+          <LargeMenu
+            toDark={toDark}
+            toLight={toLight}
             dark={dark}
-            setActiveTask={setActiveTask}
+            boards={boards}
+            setActiveBoard={setActiveBoard}
             updateModals={updateModals}
+            setActiveMenu={setActiveMenu}
+            activeBoard={activeBoard}
           />
-        ) : (
-          <Empty updateModals={updateModals} />
-        )}
-      </Content>
+        ) : null}
+        <Content
+          activeMenu={activeMenu}
+          style={{ alignItems: boards.length > 0 ? "flex-start" : "center" }}
+        >
+          {boards.length > 0 && activeBoard ? (
+            <Board
+              board={activeBoard}
+              dark={dark}
+              setActiveTask={setActiveTask}
+              updateModals={updateModals}
+            />
+          ) : (
+            <Empty updateModals={updateModals} />
+          )}
+        </Content>
+      </Wrapper>
       {modalsInfo.NewBoard ? (
         <Modal onClick={() => updateModals("NewBoard")}>
-          <NewBoard dark={dark} setBoards={setBoards} />
+          <NewBoard
+            dark={dark}
+            setBoards={setBoards}
+            updateModals={updateModals}
+            setActiveBoard={setActiveBoard}
+          />
         </Modal>
       ) : null}
       {modalsInfo.NewTask && activeBoard ? (
@@ -150,6 +179,8 @@ function App() {
             dark={dark}
             board={activeBoard}
             updateModals={updateModals}
+            removeBoard={removeBoard}
+            setActiveBoard={setActiveBoard}
           />
         </Modal>
       ) : null}
@@ -159,18 +190,55 @@ function App() {
 
 export default App;
 
-const Main = styled.main`
-  width: 100%;
-  min-height: 100vh;
-`;
+const Main = styled.main(
+  ({ dark }: ThemeProps) => css`
+    width: 100%;
+    background-color: ${dark ? "var(--darkBg)" : "var(--veryLightGray)"};
+    height: 100vh;
+    max-height: 100vh;
+  `
+);
+
+type ContentType = {
+  activeMenu: boolean;
+};
 
 const Content = styled.section(
-  ({ dark }: ThemeProps) => css`
+  ({ activeMenu }: ContentType) => css`
     min-width: 100vw;
-    min-height: calc(100vh - 64px);
+    height: calc(100vh - 64px);
     display: flex;
     padding: 24px 16px;
     overflow: auto;
-    background-color: ${dark ? "var(--darkBg)" : "var(--veryLightGray)"};
+    @media (min-width: 768px) {
+      height: calc(100vh - 80px);
+      min-width: ${activeMenu ? "calc(100vw - 260px)" : "100vw"};
+    }
+    @media (min-width: 1440px) {
+      height: calc(100vh - 96px);
+      min-width: ${activeMenu ? "calc(100vw - 300px)" : "100vw"};
+    }
   `
 );
+
+const Wrapper = styled.div`
+  display: flex;
+`;
+
+const ShowTabletMenu = styled.div`
+  position: fixed;
+  left: 0;
+  bottom: 32px;
+  z-index: 30;
+  width: 56px;
+  height: 48px;
+  background-color: var(--violet);
+  &:hover {
+    background-color: var(--violetHover);
+  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0 40px 40px 0;
+  cursor: pointer;
+`;

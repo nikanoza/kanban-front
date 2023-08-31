@@ -10,3 +10,4 @@ export { default as EditTask } from "./EditTask";
 export { default as DeleteTask } from "./DeleteTask";
 export { default as EditBoard } from "./EditBoard";
 export { default as DeleteBoard } from "./DeleteBoard";
+export { default as LargeMenu } from "./LargeMenu";

@@ -10,13 +10,21 @@ import {
 import { newBoardSchema } from "../schemas";
 import { Close } from "../svg";
 import { createNewBoard } from "../services/boardServices";
+import { ModalsInfoType } from "../hooks/useModals";
 
 type PropsType = {
   dark: boolean;
   setBoards: React.Dispatch<React.SetStateAction<BoardType[]>>;
+  updateModals: (property: keyof ModalsInfoType) => void;
+  setActiveBoard: React.Dispatch<React.SetStateAction<BoardType | null>>;
 };
 
-const NewBoard: React.FC<PropsType> = ({ dark, setBoards }) => {
+const NewBoard: React.FC<PropsType> = ({
+  dark,
+  setBoards,
+  updateModals,
+  setActiveBoard,
+}) => {
   const {
     handleSubmit,
     register,
@@ -38,8 +46,11 @@ const NewBoard: React.FC<PropsType> = ({ dark, setBoards }) => {
     try {
       const response = await createNewBoard(data);
       setBoards((boards) => [...boards, response.data]);
+      setActiveBoard(response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      updateModals("NewBoard");
     }
   };
 
@@ -223,4 +234,7 @@ const SubmitButton = styled.button`
   font-style: normal;
   font-weight: 700;
   line-height: 23px;
+  &:hover {
+    background: var(--violetHover);
+  }
 `;

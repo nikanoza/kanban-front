@@ -2,14 +2,39 @@ import styled, { css } from "styled-components";
 import { ModalsInfoType } from "../hooks/useModals";
 import { BoardType, ThemeProps } from "../types";
 import { Main, SubmitButton } from "./styled-components";
+import { deleteBoard } from "../services/boardServices";
 
 type PropsType = {
   dark: boolean;
   board: BoardType;
   updateModals: (property: keyof ModalsInfoType) => void;
+  removeBoard: (id: string) => BoardType[];
+  setActiveBoard: React.Dispatch<React.SetStateAction<BoardType | null>>;
 };
 
-const DeleteBoard: React.FC<PropsType> = ({ dark, board, updateModals }) => {
+const DeleteBoard: React.FC<PropsType> = ({
+  dark,
+  board,
+  updateModals,
+  removeBoard,
+  setActiveBoard,
+}) => {
+  const removeActiveBoard = async () => {
+    try {
+      await deleteBoard(board.id);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      const newBoards = removeBoard(board.id);
+      if (newBoards.length > 0) {
+        setActiveBoard(newBoards[0]);
+      } else {
+        setActiveBoard(null);
+      }
+      updateModals("DeleteBoard");
+    }
+  };
+
   return (
     <Main dark={dark}>
       <DeleteText>Delete this board?</DeleteText>
@@ -17,7 +42,7 @@ const DeleteBoard: React.FC<PropsType> = ({ dark, board, updateModals }) => {
         Are you sure you want to delete the ‘{board.title}’ board? This action
         will remove all columns and tasks and cannot be reversed.
       </Description>
-      <Confirm onClick={() => {}}>Delete</Confirm>
+      <Confirm onClick={removeActiveBoard}>Delete</Confirm>
       <Cancel dark={dark} onClick={() => updateModals("DeleteBoard")}>
         Cancel
       </Cancel>
@@ -46,6 +71,9 @@ const Description = styled.h3`
 
 const Confirm = styled(SubmitButton)`
   background: var(--error);
+  &:hover {
+    background: var(--errorHover);
+  }
 `;
 
 const Cancel = styled(SubmitButton)(

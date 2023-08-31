@@ -7,6 +7,7 @@ const Options: React.FC<SvgComponentType> = ({ onClick }) => {
       height="20"
       xmlns="http://www.w3.org/2000/svg"
       onClick={onClick}
+      style={{ cursor: "pointer" }}
     >
       <g fill="#828FA3" fillRule="evenodd">
         <circle cx="2.308" cy="2.308" r="2.308" />

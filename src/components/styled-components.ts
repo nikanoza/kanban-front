@@ -9,7 +9,13 @@ export const Main = styled.div(
     padding: 24px;
     border-radius: 6px;
     position: relative;
+    max-height: 500px;
+    overflow-y: auto;
     background-color: ${dark ? "var(--darkGray)" : "var(--light)"};
+    @media (min-width: 768px) {
+      padding: 32px;
+      max-height: 800px;
+    }
   `
 );
 
@@ -121,7 +127,11 @@ export const SubmitButton = styled.button`
   font-size: 13px;
   font-style: normal;
   font-weight: 700;
+  cursor: pointer;
   line-height: 23px;
+  &:hover {
+    background: var(--violetHover);
+  }
 `;
 
 export const ColumnSelect = styled.div(

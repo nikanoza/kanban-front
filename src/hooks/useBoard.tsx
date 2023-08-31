@@ -359,6 +359,14 @@ const useBoard = () => {
     setBoards(clone);
   };
 
+  const removeBoard = (id: string) => {
+    const [boardIndex] = getItemAndItemIndex(id);
+    const clone = [...boards];
+    clone.splice(boardIndex, 1);
+    setBoards(clone);
+    return clone;
+  };
+
   return {
     boards,
     setBoards,
@@ -374,6 +382,7 @@ const useBoard = () => {
     updateColumnTitle,
     removeColumn,
     createColumn,
+    removeBoard,
   };
 };
 

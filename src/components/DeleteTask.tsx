@@ -69,6 +69,9 @@ const Description = styled.h3`
 
 const Confirm = styled(SubmitButton)`
   background: var(--error);
+  &:hover {
+    background: var(--errorHover);
+  }
 `;
 
 const Cancel = styled(SubmitButton)(

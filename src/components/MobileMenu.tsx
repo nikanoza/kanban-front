@@ -12,6 +12,7 @@ type PropsType = {
   closeMenu: () => void;
   updateModals: (property: key) => void;
   setActiveBoard: React.Dispatch<React.SetStateAction<BoardType | null>>;
+  activeBoard: BoardType | null;
 };
 
 const MobileMenu: React.FC<PropsType> = ({
@@ -22,6 +23,7 @@ const MobileMenu: React.FC<PropsType> = ({
   toLight,
   updateModals,
   setActiveBoard,
+  activeBoard,
 }) => {
   const modalRef = useRef<HTMLDivElement | null>(null);
 
@@ -39,14 +41,25 @@ const MobileMenu: React.FC<PropsType> = ({
         <Title>ALL BOARDS ({boards.length})</Title>
         <BoardList>
           {boards.map((board) => (
-            <BoardTitle key={board.id}>
-              <BoardIcon />
-              <Text onClick={() => setActiveBoard(board)}>{board.title}</Text>
+            <BoardTitle
+              key={board.id}
+              active={board.title === activeBoard?.title}
+            >
+              <BoardIcon
+                color={board.title === activeBoard?.title ? "#fff" : ""}
+              />
+              <Text
+                onClick={() => setActiveBoard(board)}
+                active={board.title === activeBoard?.title}
+              >
+                {board.title}
+              </Text>
             </BoardTitle>
           ))}
-          <BoardTitle>
+          <BoardTitle active={false}>
             <BoardIcon color="#635FC7" />
             <Text
+              active={false}
               style={{ color: "#635FC7" }}
               onClick={() => updateModals("NewBoard")}
             >
@@ -114,23 +127,40 @@ const BoardList = styled.ul`
   margin-top: 19px;
 `;
 
-const BoardTitle = styled.li`
-  padding: 14px 0 14px 24px;
-  min-width: 240px;
-  border-radius: 0px 100px 100px 0px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-`;
+type ActiveBoardProps = {
+  active: boolean;
+};
 
-const Text = styled.h2`
-  color: var(--grey);
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  cursor: pointer;
-`;
+const BoardTitle = styled.li(
+  ({ active }: ActiveBoardProps) => css`
+    padding: 14px 0 14px 24px;
+    max-width: 240px;
+    border-radius: 0px 100px 100px 0px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: ${active ? "var(--violet)" : "transparent"};
+    &:hover {
+      background-color: ${active ? "var(--violet)" : "rgba(99, 95, 199, 0.1)"};
+    }
+    &:hover {
+      > h2 {
+        color: ${active ? "var(--light)" : "var(--violet)"};
+      }
+    }
+  `
+);
+
+const Text = styled.h2(
+  ({ active }: ActiveBoardProps) => css`
+    color: ${active ? "var(--light)" : "var(--grey)"};
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    cursor: pointer;
+  `
+);
 
 const Panel = styled.div(
   ({ dark }: ThemeProps) => css`

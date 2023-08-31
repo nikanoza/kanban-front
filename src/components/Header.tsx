@@ -90,6 +90,7 @@ const Header: React.FC<PropsType> = ({
             toLight={toLight}
             updateModals={updateModals}
             setActiveBoard={setActiveBoard}
+            activeBoard={activeBoard}
           />
         ) : null}
         {showPanel ? (

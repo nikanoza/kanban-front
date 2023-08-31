@@ -106,7 +106,12 @@ function App() {
       </Wrapper>
       {modalsInfo.NewBoard ? (
         <Modal onClick={() => updateModals("NewBoard")}>
-          <NewBoard dark={dark} setBoards={setBoards} />
+          <NewBoard
+            dark={dark}
+            setBoards={setBoards}
+            updateModals={updateModals}
+            setActiveBoard={setActiveBoard}
+          />
         </Modal>
       ) : null}
       {modalsInfo.NewTask && activeBoard ? (

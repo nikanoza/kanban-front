@@ -7,6 +7,7 @@ import {
   EditTask,
   Empty,
   Header,
+  LargeMenu,
   Modal,
   NewBoard,
   NewTask,
@@ -39,6 +40,7 @@ function App() {
   } = useBoard();
   const [activeBoard, setActiveBoard] = useState<BoardType | null>(null);
   const [activeTask, setActiveTask] = useState<TaskType | null>(null);
+  const [activeMenu, setActiveMenu] = useState<boolean>(true);
 
   useEffect(() => {
     const getBoardsData = async () => {
@@ -55,7 +57,7 @@ function App() {
   }, [setBoards]);
 
   return (
-    <Main>
+    <Main dark={dark}>
       <Header
         dark={dark}
         toDark={toDark}
@@ -65,21 +67,31 @@ function App() {
         activeBoard={activeBoard}
         setActiveBoard={setActiveBoard}
       />
-      <Content
-        dark={dark}
-        style={{ alignItems: boards.length > 0 ? "flex-start" : "center" }}
-      >
-        {boards.length > 0 && activeBoard ? (
-          <Board
-            board={activeBoard}
+      <Wrapper>
+        {activeMenu ? (
+          <LargeMenu
             dark={dark}
-            setActiveTask={setActiveTask}
+            boards={boards}
+            setActiveBoard={setActiveBoard}
             updateModals={updateModals}
           />
-        ) : (
-          <Empty updateModals={updateModals} />
-        )}
-      </Content>
+        ) : null}
+        <Content
+          activeMenu={activeMenu}
+          style={{ alignItems: boards.length > 0 ? "flex-start" : "center" }}
+        >
+          {boards.length > 0 && activeBoard ? (
+            <Board
+              board={activeBoard}
+              dark={dark}
+              setActiveTask={setActiveTask}
+              updateModals={updateModals}
+            />
+          ) : (
+            <Empty updateModals={updateModals} />
+          )}
+        </Content>
+      </Wrapper>
       {modalsInfo.NewBoard ? (
         <Modal onClick={() => updateModals("NewBoard")}>
           <NewBoard dark={dark} setBoards={setBoards} />
@@ -159,18 +171,32 @@ function App() {
 
 export default App;
 
-const Main = styled.main`
-  width: 100%;
-  min-height: 100vh;
-`;
+const Main = styled.main(
+  ({ dark }: ThemeProps) => css`
+    width: 100%;
+    background-color: ${dark ? "var(--darkBg)" : "var(--veryLightGray)"};
+    min-height: 100vh;
+  `
+);
+
+type ContentType = {
+  activeMenu: boolean;
+};
 
 const Content = styled.section(
-  ({ dark }: ThemeProps) => css`
+  ({ activeMenu }: ContentType) => css`
     min-width: 100vw;
     min-height: calc(100vh - 64px);
     display: flex;
     padding: 24px 16px;
     overflow: auto;
-    background-color: ${dark ? "var(--darkBg)" : "var(--veryLightGray)"};
+    @media (min-width: 768px) {
+      min-height: calc(100vh - 80px);
+      min-width: ${activeMenu ? "calc(100vw - 260px)" : "100vw"};
+    }
   `
 );
+
+const Wrapper = styled.div`
+  display: flex;
+`;

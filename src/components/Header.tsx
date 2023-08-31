@@ -114,7 +114,7 @@ const HeaderElem = styled.header(
     align-items: center;
     @media (min-width: 768px) {
       padding: 0 20px;
-      width: calc(100% - 260px);
+      width: calc(100% - 261px);
       margin-left: auto;
       height: 80px;
     }

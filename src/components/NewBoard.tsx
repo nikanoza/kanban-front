@@ -38,8 +38,8 @@ const NewBoard: React.FC<PropsType> = ({
   });
 
   const { fields, append, remove } = useFieldArray({
-    name: "columns",
     control: control,
+    name: "columns",
   });
 
   const onSubmit: SubmitHandler<NewBoardType> = async (data) => {

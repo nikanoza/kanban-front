@@ -115,7 +115,7 @@ const BoardList = styled.ul`
 `;
 
 const BoardTitle = styled.li`
-  padding-left: 24px;
+  padding: 14px 0 14px 24px;
   min-width: 240px;
   border-radius: 0px 100px 100px 0px;
   display: flex;

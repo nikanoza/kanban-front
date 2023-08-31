@@ -32,22 +32,32 @@ const Header: React.FC<PropsType> = ({
 
   return (
     <HeaderElem dark={dark}>
-      <LogoMobile />
+      <MobileElement>
+        <LogoMobile />
+      </MobileElement>
       <BoardSelect dark={dark}>
         {activeBoard ? activeBoard.title : "No Boards"}
       </BoardSelect>
-      <DownArrow
-        onClick={() => {
-          setShowMenu(!showMenu);
-          setShowPanel(false);
-        }}
-      />
-      <PlusBox>
-        <Plus
+      <MobileElement
+        style={{ transform: showMenu ? "rotate(180deg)" : "none" }}
+      >
+        <DownArrow
           onClick={() => {
-            updateModals("NewTask");
+            setShowMenu(!showMenu);
+            setShowPanel(false);
           }}
         />
+      </MobileElement>
+      <LargeTitle dark={dark}>{activeBoard?.title}</LargeTitle>
+      <PlusBox active={activeBoard ? true : false}>
+        <LargeElement>+ Add New Task</LargeElement>
+        <MobileElement>
+          <Plus
+            onClick={() => {
+              updateModals("NewTask");
+            }}
+          />
+        </MobileElement>
       </PlusBox>
       <Options
         onClick={() => {
@@ -102,6 +112,12 @@ const HeaderElem = styled.header(
     background-color: ${dark ? "#2B2C37" : "var(--light)"};
     display: flex;
     align-items: center;
+    @media (min-width: 768px) {
+      padding: 0 20px;
+      width: calc(100% - 260px);
+      margin-left: auto;
+      height: 80px;
+    }
   `
 );
 
@@ -114,20 +130,37 @@ const BoardSelect = styled.h2(
     line-height: normal;
     margin-left: 16px;
     margin-right: 8px;
+    @media (min-width: 768px) {
+      display: none;
+    }
   `
 );
 
-const PlusBox = styled.div`
-  background-color: rgba(99, 95, 199, 0.25);
-  border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 48px;
-  height: 32px;
-  margin-left: auto;
-  margin-right: 16px;
-`;
+const PlusBox = styled.div(
+  ({ active }: { active: boolean }) => css`
+    background-color: var(--violet);
+    opacity: ${active ? "1" : "0.25"};
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 32px;
+    margin-left: auto;
+    margin-right: 16px;
+    @media (min-width: 768px) {
+      width: fit-content;
+      padding: 14px 24px;
+      height: 48px;
+      border-radius: 24px;
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      color: var(--light);
+    }
+  `
+);
 
 const Panel = styled.div(
   ({ dark }: ThemeProps) => css`
@@ -161,3 +194,30 @@ const DeleteText = styled.h3`
   margin-top: 16px;
   width: fit-content;
 `;
+
+const MobileElement = styled.div`
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
+
+const LargeElement = styled.div`
+  display: none;
+  @media (min-width: 768px) {
+    display: flex;
+  }
+`;
+
+const LargeTitle = styled.h2(
+  ({ dark }: ThemeProps) => css`
+    color: ${dark ? "var(--light)" : "var(--dark)"};
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    display: none;
+    @media (min-width: 768px) {
+      display: block;
+    }
+  `
+);

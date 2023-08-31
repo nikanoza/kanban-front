@@ -64,14 +64,15 @@ const Header: React.FC<PropsType> = ({
           />
         </MobileElement>
         <LargeTitle dark={dark}>{activeBoard?.title}</LargeTitle>
-        <PlusBox active={activeBoard ? true : false}>
+        <PlusBox
+          active={activeBoard ? true : false}
+          onClick={() => {
+            updateModals("NewTask");
+          }}
+        >
           <LargeElement>+ Add New Task</LargeElement>
           <MobileElement>
-            <Plus
-              onClick={() => {
-                updateModals("NewTask");
-              }}
-            />
+            <Plus />
           </MobileElement>
         </PlusBox>
         <Options
@@ -164,6 +165,7 @@ const PlusBox = styled.div(
     height: 32px;
     margin-left: auto;
     margin-right: 16px;
+    cursor: pointer;
     @media (min-width: 768px) {
       width: fit-content;
       padding: 14px 24px;

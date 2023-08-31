@@ -12,3 +12,4 @@ export { default as Options } from "./Options";
 export { default as LogoDark } from "./LogoDark";
 export { default as LogoLight } from "./LogoLight";
 export { default as LogoMobile } from "./LogoMobile";
+export { default as Show } from "./Show";

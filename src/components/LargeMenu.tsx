@@ -160,6 +160,7 @@ const CloseBox = styled.div`
   align-items: center;
   margin-left: 24px;
   margin-top: 30px;
+  cursor: pointer;
 `;
 
 const CloseText = styled.h3`

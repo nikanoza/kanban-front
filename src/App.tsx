@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { BoardType, TaskType, ThemeProps } from "./types";
 import { getAllBoards } from "./services/boardServices";
 import { useBoard, useModals, useTheme } from "./hooks";
+import { Show } from "./svg";
 
 function App() {
   const { dark, toDark, toLight } = useTheme();
@@ -58,6 +59,11 @@ function App() {
 
   return (
     <Main dark={dark}>
+      {activeMenu ? null : (
+        <ShowTabletMenu onClick={() => setActiveMenu(true)}>
+          <Show />
+        </ShowTabletMenu>
+      )}
       <Header
         dark={dark}
         toDark={toDark}
@@ -203,4 +209,19 @@ const Content = styled.section(
 
 const Wrapper = styled.div`
   display: flex;
+`;
+
+const ShowTabletMenu = styled.div`
+  position: fixed;
+  left: 0;
+  bottom: 32px;
+  z-index: 30;
+  width: 56px;
+  height: 48px;
+  background-color: var(--violet);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0 40px 40px 0;
+  cursor: pointer;
 `;

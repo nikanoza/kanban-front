@@ -145,10 +145,13 @@ const TaskItem = styled.div(
     width: 100%;
     height: 60px;
     border-radius: 4px;
-    background: ${dark ? "var(--darkBg)" : "var(--veryLightGray)"};
+    background-color: ${dark ? "var(--darkBg)" : "var(--veryLightGray)"};
     display: flex;
     align-items: center;
     padding: 0 8px 0 12px;
+    &:hover {
+      background-color: rgba(99, 95, 199, 0.25);
+    }
   `
 );
 
@@ -219,6 +222,7 @@ const EditText = styled.h3`
   font-weight: 500;
   line-height: 23px;
   width: fit-content;
+  cursor: pointer;
 `;
 
 const DeleteText = styled.h3`
@@ -229,4 +233,5 @@ const DeleteText = styled.h3`
   line-height: 23px;
   margin-top: 16px;
   width: fit-content;
+  cursor: pointer;
 `;

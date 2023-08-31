@@ -131,9 +131,13 @@ const HeaderElem = styled.header(
     align-items: center;
     @media (min-width: 768px) {
       padding: 0 20px;
-      width: calc(100% - 261px);
+      width: calc(100% - 301px);
       margin-left: auto;
       height: 80px;
+    }
+    @media (min-width: 1440px) {
+      padding: 0 24px;
+      height: 96px;
     }
   `
 );
@@ -156,6 +160,9 @@ const BoardSelect = styled.h2(
 const PlusBox = styled.div(
   ({ active }: { active: boolean }) => css`
     background-color: var(--violet);
+    &:hover {
+      background-color: var(--violetHover);
+    }
     opacity: ${active ? "1" : "0.25"};
     border-radius: 20px;
     display: flex;
@@ -201,6 +208,7 @@ const EditText = styled.h3`
   font-weight: 500;
   line-height: 23px;
   width: fit-content;
+  cursor: pointer;
 `;
 
 const DeleteText = styled.h3`
@@ -211,6 +219,7 @@ const DeleteText = styled.h3`
   line-height: 23px;
   margin-top: 16px;
   width: fit-content;
+  cursor: pointer;
 `;
 
 const MobileElement = styled.div`
@@ -249,6 +258,10 @@ const Menu = styled.menu(
     background-color: ${dark ? "var(--darkGray)" : "var(--light)"};
     @media (min-width: 768px) {
       display: flex;
+    }
+    @media (min-width: 1440px) {
+      width: 300px;
+      height: 96px;
     }
   `
 );

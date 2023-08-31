@@ -127,7 +127,11 @@ export const SubmitButton = styled.button`
   font-size: 13px;
   font-style: normal;
   font-weight: 700;
+  cursor: pointer;
   line-height: 23px;
+  &:hover {
+    background: var(--violetHover);
+  }
 `;
 
 export const ColumnSelect = styled.div(

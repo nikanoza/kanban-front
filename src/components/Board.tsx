@@ -146,6 +146,9 @@ const NewColumn = styled.div(
     background: ${dark
       ? "linear-gradient(180deg, rgba(43, 44, 55, 0.25) 0%, rgba(43, 44, 55, 0.13) 100%)"
       : "linear-gradient(180deg,#e9effa 0%,rgba(233, 239, 250, 0.5) 100%)"};
+    @media (min-width: 768px) {
+      min-height: 800px;
+    }
   `
 );
 

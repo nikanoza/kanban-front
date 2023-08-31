@@ -38,6 +38,7 @@ function App() {
     updateBoardTitle,
     removeColumn,
     createColumn,
+    removeBoard,
   } = useBoard();
   const [activeBoard, setActiveBoard] = useState<BoardType | null>(null);
   const [activeTask, setActiveTask] = useState<TaskType | null>(null);
@@ -84,6 +85,7 @@ function App() {
             setActiveBoard={setActiveBoard}
             updateModals={updateModals}
             setActiveMenu={setActiveMenu}
+            activeBoard={activeBoard}
           />
         ) : null}
         <Content
@@ -172,6 +174,8 @@ function App() {
             dark={dark}
             board={activeBoard}
             updateModals={updateModals}
+            removeBoard={removeBoard}
+            setActiveBoard={setActiveBoard}
           />
         </Modal>
       ) : null}
@@ -185,7 +189,8 @@ const Main = styled.main(
   ({ dark }: ThemeProps) => css`
     width: 100%;
     background-color: ${dark ? "var(--darkBg)" : "var(--veryLightGray)"};
-    min-height: 100vh;
+    height: 100vh;
+    max-height: 100vh;
   `
 );
 
@@ -196,13 +201,17 @@ type ContentType = {
 const Content = styled.section(
   ({ activeMenu }: ContentType) => css`
     min-width: 100vw;
-    min-height: calc(100vh - 64px);
+    height: calc(100vh - 64px);
     display: flex;
     padding: 24px 16px;
     overflow: auto;
     @media (min-width: 768px) {
-      min-height: calc(100vh - 80px);
+      height: calc(100vh - 80px);
       min-width: ${activeMenu ? "calc(100vw - 260px)" : "100vw"};
+    }
+    @media (min-width: 1440px) {
+      height: calc(100vh - 96px);
+      min-width: ${activeMenu ? "calc(100vw - 300px)" : "100vw"};
     }
   `
 );
@@ -219,6 +228,9 @@ const ShowTabletMenu = styled.div`
   width: 56px;
   height: 48px;
   background-color: var(--violet);
+  &:hover {
+    background-color: var(--violetHover);
+  }
   display: flex;
   justify-content: center;
   align-items: center;

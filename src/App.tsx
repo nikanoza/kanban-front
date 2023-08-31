@@ -66,14 +66,18 @@ function App() {
         updateModals={updateModals}
         activeBoard={activeBoard}
         setActiveBoard={setActiveBoard}
+        activeMenu={activeMenu}
       />
       <Wrapper>
         {activeMenu ? (
           <LargeMenu
+            toDark={toDark}
+            toLight={toLight}
             dark={dark}
             boards={boards}
             setActiveBoard={setActiveBoard}
             updateModals={updateModals}
+            setActiveMenu={setActiveMenu}
           />
         ) : null}
         <Content

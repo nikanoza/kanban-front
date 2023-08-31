@@ -1,6 +1,13 @@
 import styled, { css } from "styled-components";
 import { BoardType, ThemeProps } from "../types";
-import { DownArrow, Plus, LogoMobile, Options } from "../svg";
+import {
+  DownArrow,
+  Plus,
+  LogoMobile,
+  Options,
+  LogoLight,
+  LogoDark,
+} from "../svg";
 import { useState } from "react";
 import { MobileMenu } from ".";
 import { key } from "../hooks/useModals";
@@ -12,6 +19,7 @@ type PropsType = {
   updateModals: (property: key) => void;
   activeBoard: BoardType | null;
   setActiveBoard: React.Dispatch<React.SetStateAction<BoardType | null>>;
+  activeMenu: boolean;
 };
 
 const Header: React.FC<PropsType> = ({
@@ -22,6 +30,7 @@ const Header: React.FC<PropsType> = ({
   updateModals,
   activeBoard,
   setActiveBoard,
+  activeMenu,
 }) => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [showPanel, setShowPanel] = useState<boolean>(false);
@@ -31,74 +40,81 @@ const Header: React.FC<PropsType> = ({
   };
 
   return (
-    <HeaderElem dark={dark}>
-      <MobileElement>
-        <LogoMobile />
-      </MobileElement>
-      <BoardSelect dark={dark}>
-        {activeBoard ? activeBoard.title : "No Boards"}
-      </BoardSelect>
-      <MobileElement
-        style={{ transform: showMenu ? "rotate(180deg)" : "none" }}
-      >
-        <DownArrow
-          onClick={() => {
-            setShowMenu(!showMenu);
-            setShowPanel(false);
-          }}
-        />
-      </MobileElement>
-      <LargeTitle dark={dark}>{activeBoard?.title}</LargeTitle>
-      <PlusBox active={activeBoard ? true : false}>
-        <LargeElement>+ Add New Task</LargeElement>
+    <div style={{ display: "flex" }}>
+      {activeMenu ? null : (
+        <Menu dark={dark}>
+          <LogoBox>{dark ? <LogoLight /> : <LogoDark />}</LogoBox>
+        </Menu>
+      )}
+      <HeaderElem dark={dark}>
         <MobileElement>
-          <Plus
+          <LogoMobile />
+        </MobileElement>
+        <BoardSelect dark={dark}>
+          {activeBoard ? activeBoard.title : "No Boards"}
+        </BoardSelect>
+        <MobileElement
+          style={{ transform: showMenu ? "rotate(180deg)" : "none" }}
+        >
+          <DownArrow
             onClick={() => {
-              updateModals("NewTask");
+              setShowMenu(!showMenu);
+              setShowPanel(false);
             }}
           />
         </MobileElement>
-      </PlusBox>
-      <Options
-        onClick={() => {
-          setShowPanel(!showPanel);
-          setShowMenu(false);
-        }}
-      />
-      {showMenu ? (
-        <MobileMenu
-          dark={dark}
-          closeMenu={closeMenu}
-          boards={boards}
-          toDark={toDark}
-          toLight={toLight}
-          updateModals={updateModals}
-          setActiveBoard={setActiveBoard}
+        <LargeTitle dark={dark}>{activeBoard?.title}</LargeTitle>
+        <PlusBox active={activeBoard ? true : false}>
+          <LargeElement>+ Add New Task</LargeElement>
+          <MobileElement>
+            <Plus
+              onClick={() => {
+                updateModals("NewTask");
+              }}
+            />
+          </MobileElement>
+        </PlusBox>
+        <Options
+          onClick={() => {
+            setShowPanel(!showPanel);
+            setShowMenu(false);
+          }}
         />
-      ) : null}
-      {showPanel ? (
-        <Panel dark={dark}>
-          <EditText
-            onClick={() => {
-              updateModals("EditBoard");
-              setShowMenu(false);
-              setShowPanel(false);
-            }}
-          >
-            Edit Board
-          </EditText>
-          <DeleteText
-            onClick={() => {
-              updateModals("DeleteBoard");
-              setShowMenu(false);
-              setShowPanel(false);
-            }}
-          >
-            Delete Board
-          </DeleteText>
-        </Panel>
-      ) : null}
-    </HeaderElem>
+        {showMenu ? (
+          <MobileMenu
+            dark={dark}
+            closeMenu={closeMenu}
+            boards={boards}
+            toDark={toDark}
+            toLight={toLight}
+            updateModals={updateModals}
+            setActiveBoard={setActiveBoard}
+          />
+        ) : null}
+        {showPanel ? (
+          <Panel dark={dark}>
+            <EditText
+              onClick={() => {
+                updateModals("EditBoard");
+                setShowMenu(false);
+                setShowPanel(false);
+              }}
+            >
+              Edit Board
+            </EditText>
+            <DeleteText
+              onClick={() => {
+                updateModals("DeleteBoard");
+                setShowMenu(false);
+                setShowPanel(false);
+              }}
+            >
+              Delete Board
+            </DeleteText>
+          </Panel>
+        ) : null}
+      </HeaderElem>
+    </div>
   );
 };
 
@@ -221,3 +237,20 @@ const LargeTitle = styled.h2(
     }
   `
 );
+
+const Menu = styled.menu(
+  ({ dark }: ThemeProps) => css`
+    width: 260px;
+    height: 80px;
+    display: none;
+    padding: 32px 0 28px 0;
+    background-color: ${dark ? "var(--darkGray)" : "var(--light)"};
+    @media (min-width: 768px) {
+      display: flex;
+    }
+  `
+);
+
+const LogoBox = styled.div`
+  margin-left: 26px;
+`;

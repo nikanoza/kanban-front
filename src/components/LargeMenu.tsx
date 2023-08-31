@@ -1,13 +1,16 @@
 import styled, { css } from "styled-components";
 import { BoardType, ThemeProps } from "../types";
-import { BoardIcon, LogoDark, LogoLight } from "../svg";
+import { BoardIcon, Hide, LogoDark, LogoLight, Moon, Sun } from "../svg";
 import { key } from "../hooks/useModals";
 
 type PropsType = {
   dark: boolean;
   boards: BoardType[];
+  toDark: () => void;
+  toLight: () => void;
   updateModals: (property: key) => void;
   setActiveBoard: React.Dispatch<React.SetStateAction<BoardType | null>>;
+  setActiveMenu: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const LargeMenu: React.FC<PropsType> = ({
@@ -15,6 +18,9 @@ const LargeMenu: React.FC<PropsType> = ({
   boards,
   updateModals,
   setActiveBoard,
+  toDark,
+  toLight,
+  setActiveMenu,
 }) => {
   return (
     <Menu dark={dark}>
@@ -37,6 +43,26 @@ const LargeMenu: React.FC<PropsType> = ({
           </Text>
         </BoardTitle>
       </BoardList>
+      <Panel dark={dark}>
+        <Sun onClick={toLight} />
+        <Switch>
+          <Circle
+            style={{
+              marginLeft: dark ? "auto" : 0,
+              marginRight: dark ? 0 : "auto",
+            }}
+          />
+        </Switch>
+        <Moon onClick={toDark} />
+      </Panel>
+      <CloseBox
+        onClick={() => {
+          setActiveMenu(false);
+        }}
+      >
+        <Hide />
+        <CloseText>Hide Sidebar</CloseText>
+      </CloseBox>
     </Menu>
   );
 };
@@ -96,4 +122,51 @@ const Text = styled.h2`
   font-weight: 700;
   line-height: normal;
   cursor: pointer;
+`;
+
+const Panel = styled.div(
+  ({ dark }: ThemeProps) => css`
+    width: 235px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    border-radius: 6px;
+    background-color: ${dark ? "var(--darkBg)" : "var(--veryLightGray)"};
+    margin: auto auto 0 auto;
+  `
+);
+
+const Switch = styled.div`
+  width: 40px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  background-color: var(--violet);
+  border-radius: 12px;
+`;
+
+const Circle = styled.div`
+  width: 14px;
+  height: 14px;
+  background-color: var(--light);
+  border-radius: 50%;
+`;
+
+const CloseBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 24px;
+  margin-top: 30px;
+`;
+
+const CloseText = styled.h3`
+  color: var(--grey);
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-left: 10px;
 `;
